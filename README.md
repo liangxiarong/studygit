@@ -1,0 +1,2 @@
+# studygit
+hello git
