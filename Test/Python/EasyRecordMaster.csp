@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="server=127.0.0.1;Initial Catalog=DTcmsdb4;Persist Security Info=True;User ID=sa;Password=ql123456;" />
+  </variables>
+  <propertySets>
+    <propertySet name="EasyRecordMaster.cs" output="EasyRecordMaster.cs" template="EasyRecordMaster.cst">
+      <property name="VersionColumn">^((R|r)ow)?(V|v)ersion$</property>
+      <property name="ModelNamespace">GPS.Model</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="NeededTables">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+        <tableList>
+          <table>
+            <owner>dbo</owner>
+            <name>dt_article_attribute_field</name>
+          </table>
+        </tableList>
+      </property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

@@ -1,0 +1,293 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Src="" Inherits="" Debug="False" CompilerVersion="v3.5" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context"  Description="Table that the stored procedures should be based on." %>
+<%@ Property Name="ModelNamespace" Type="System.String" Default="" Optional="True" Category="Strings" Description="This is a sample string property." %>
+<%@ Property Name="ClassName" Type="System.String" Default="" Optional="True" Category="Strings" Description="This is a sample string property." %>
+<%
+    if(string.IsNullOrEmpty(ClassName))ClassName=SourceTable.Name;
+%>
+using System;
+using System.Collections.Generic;
+using System.Data;
+using MySql.Data.MySqlClient;
+namespace <%=ModelNamespace%> 
+{
+    /// <summary>
+    ///<%=SourceTable.Description %>
+    /// Auto Generate: Phil <%=DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")%> 
+    /// </summary>
+    [Table("<%=SourceTable.Name%>")]
+    public partial class <%=ClassName%>
+    {
+        #region Fields
+        <% for(int i=0;i<SourceTable.Columns.Count;i++){%>
+        private <%=GetCSharpVariableType(SourceTable.Columns[i])%> _<%=SourceTable.Columns[i].Name%>;
+        <%}%>
+        #endregion
+        
+        #region Properties
+
+        <% for(int i=0;i<SourceTable.Columns.Count;i++){%>
+        /// <summary>
+        /// <%=SourceTable.Columns[i].Description%>
+        /// </summary>
+        <%if(SourceTable.Columns[i].IsPrimaryKeyMember){%>
+        [ColumnKey(<%if((bool)SourceTable.Columns[i].ExtendedProperties["CS_IsIdentity"].Value){%>GenerateType.Native<%}else{%>GenerateType.Generator<%}%>,"<%=SourceTable.Columns[i].Name%>",<%=GetSqlDbType(SourceTable.Columns[i])%>,<%=GetColumnSize(GetSqlDbType(SourceTable.Columns[i]),SourceTable.Columns[i].Size)%>)]
+        <%}else{%>
+        [Column(<%if((bool)SourceTable.Columns[i].ExtendedProperties["CS_IsIdentity"].Value){%>GenerateType.Native,<%}%>"<%=SourceTable.Columns[i].Name%>",<%=GetSqlDbType(SourceTable.Columns[i])%>,<%=GetColumnSize(GetSqlDbType(SourceTable.Columns[i]),SourceTable.Columns[i].Size)%>)]
+        <%}%>
+        public <%=GetCSharpVariableType(SourceTable.Columns[i])%> <%=SourceTable.Columns[i].Name%>
+        {
+            get{return _<%=SourceTable.Columns[i].Name%>;}
+            set{_<%=SourceTable.Columns[i].Name%>=value ;}
+        }
+        
+        <%}%>
+        #endregion        
+    }
+}
+
+
+
+
+<script runat="template">
+
+        
+// 获取指定列对应的C#数据类型
+public string GetCSharpVariableType(ColumnSchema column)
+{
+    if (column.Name.EndsWith("TypeCode")) return column.Name;
+    
+    switch (column.DataType)
+    {
+        case DbType.AnsiString: return "string";
+        case DbType.AnsiStringFixedLength: return "string";
+        case DbType.Binary: return "byte[]";
+        case DbType.Boolean: return "bool";
+        case DbType.Byte: return "byte";
+        case DbType.Currency: return "decimal";
+        case DbType.Date: return "DateTime";
+        case DbType.DateTime: return "DateTime";
+        case DbType.Decimal: return "decimal";
+        case DbType.Double: return "double";
+        case DbType.Guid: return "Guid";
+        case DbType.Int16: return "short";
+        case DbType.Int32: return "int";
+        case DbType.Int64: return "long";
+        case DbType.Object: return "object";
+        case DbType.SByte: return "sbyte";
+        case DbType.Single: return "float";
+        case DbType.String: return "string";
+        case DbType.StringFixedLength: return "string";
+        case DbType.Time: return "TimeSpan";
+        case DbType.UInt16: return "ushort";
+        case DbType.UInt32: return "uint";
+        case DbType.UInt64: return "ulong";
+        case DbType.VarNumeric: return "decimal";
+        default:
+        {
+            return "__UNKNOWN__" + column.NativeType;
+        }
+    }
+}
+// My methods here.
+
+public string GetColumnSize(string genType,int iSize)
+{
+	switch(genType)
+	{
+		case "SqlDbType.NText" :
+		case "SqlDbType.Text":
+		case "SqlDbType.Image":
+			return "int.MaxValue";
+		default:
+			return iSize.ToString();
+	}
+}
+
+public string GetCSharpDataType(ColumnSchema col)
+{
+    string str="";
+    switch(col.DataType)
+    {
+        case DbType.Int64:
+            str= "Int64";
+            break;   
+        case DbType.Boolean:
+            str= "bool";
+            break;
+        case DbType.AnsiStringFixedLength:
+            str= "string";
+            break;
+        case DbType.DateTime:
+            str= "DateTime";
+            break;
+        case DbType.Double:
+            str= "Double";
+            break;
+        case DbType.Binary:
+            str= "byte[]";
+            break;
+        case DbType.Int32:
+            str= "int";  
+            break;
+        case DbType.Currency:
+            str= "Decimal";
+            break;
+        case DbType.StringFixedLength:
+            str= "string";
+            break;
+        //case DbType.String:
+        //   str= "ntext";
+        case DbType.Decimal:
+            str= "decimal";
+            break;
+        case DbType.String:
+            str= "string";
+            break;
+        case DbType.Single:
+            str= "real";
+            break;
+        //case DbType.DateTime:
+        //    str= "smalldatetime";    
+        case DbType.Int16:
+            str= "int";
+            break;
+        //case DbType.Currency:
+        //    str= "smallmoney";
+        case DbType.Object:
+            str= "object";
+            break;
+        //case DbType.AnsiString:
+        //    str= "text";
+        case DbType.Byte:
+            str= "int";
+            break;
+        case DbType.Guid:
+            str= "Guid";
+            break;
+        case DbType.AnsiString:
+            str= "string";   
+            break;
+         case DbType.DateTimeOffset:
+            str= "DateTimeOffset";   
+            break;
+        default:
+            str= "string";
+            break;
+    }
+    return str;
+}
+
+public string GetSqlDbType(ColumnSchema column)
+{
+    switch (column.NativeType.ToLower())
+    {
+        case "bigint": return "MySqlDbType.Int64";
+        case "binary": return "MySqlDbType.Binary";
+        case "bit": return "MySqlDbType.Boolean";
+        case "char": return "MySqlDbType.VarChar";
+        case "datetime": return "MySqlDbType.DateTime";
+        case "decimal": return "MySqlDbType.Decimal";
+        case "float": return "MySqlDbType.Float";
+        case "image": return "MySqlDbType.Image";
+        case "int": return "MySqlDbType.Int32";
+        case "uint": return "MySqlDbType.UInt32";
+        case "money": return "MySqlDbType.Money";
+        case "nchar": return "MySqlDbType.NChar";
+        case "ntext": return "MySqlDbType.String";
+        case "numeric": return "MySqlDbType.Decimal";
+        case "nvarchar": return "MySqlDbType.String";
+        case "real": return "MySqlDbType.Real";
+        case "smalldatetime": return "MySqlDbType.SmallDateTime";
+        case "smallint": return "MySqlDbType.SmallInt";
+        case "smallmoney": return "MySqlDbType.SmallMoney";
+        case "sql_variant": return "MySqlDbType.Variant";
+        case "sysname": return "MySqlDbType.NChar";
+        case "text": return "MySqlDbType.Text";
+        case "timestamp": return "MySqlDbType.Timestamp";
+        case "tinyint": return "MySqlDbType.TinyInt";
+        case "uniqueidentifier": return "MySqlDbType.UniqueIdentifier";
+        case "varbinary": return "MySqlDbType.VarBinary";
+        case "varchar": return "MySqlDbType.VarChar";
+        case "datetimeoffset":return "MySqlDbType.DateTimeOffset";  
+        case "date":return "MySqlDbType.DateTime";  
+        default: return "__UNKNOWN__" + column.NativeType;
+    }
+}
+
+public string GetSqlDataType(ColumnSchema col)
+{
+    string str="";
+    switch(col.DataType)
+    {
+        case DbType.Int64:
+            str= "BigInt";
+            break;  
+        case DbType.Boolean:
+            str= "Bit";
+            break;
+        case DbType.AnsiStringFixedLength:
+            str= "Char";
+            break;
+        case DbType.DateTime:
+            str= "DateTime";
+            break;	
+        case DbType.Double:
+            str= "Double";
+            break;
+        case DbType.Binary:
+            str= "Image";
+            break;
+        case DbType.Int32:
+            str= "Int";  
+            break;
+        case DbType.Currency:
+            str= "Money";
+            break;
+        case DbType.StringFixedLength:
+            str= "NChar";
+            break;
+        //case DbType.String:
+        //   str= "ntext";
+        case DbType.Decimal:
+            str= "Decimal";
+            break;
+        case DbType.String:
+            str= "NVarChar";
+            break;
+        case DbType.Single:
+            str= "Real";
+            break;
+        //case DbType.DateTime:
+        //    str= "smalldatetime";    
+        case DbType.Int16:
+            str= "SmallInt";
+            break;
+        
+        case DbType.Byte:
+            str= "TinyInt";
+            break;
+        case DbType.Guid:
+            str= "Uniqueidentifier";
+            break;
+        case DbType.AnsiString:
+            str= "VarChar";   
+            break;
+        case DbType.DateTimeOffset:
+            str= "DateTimeOffset";   
+            break;
+        default:
+            str= "VarChar";
+            break;
+    }
+    return str;
+}
+
+</script>

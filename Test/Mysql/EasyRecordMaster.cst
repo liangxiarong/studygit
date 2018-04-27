@@ -1,0 +1,124 @@
+﻿<%-- 
+Name: NHibernateMaster.cst
+Author: Tom DuPont
+Description: Generates a complete set of Maps, Business Objects, Manager Objects, and a ManagerFactory for NHibernate, the adds them to the specified .csproj file.
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" OutputType="None" Debug="False" Description="Generates a complete set of Maps, Business Objects, Manager Objects, and a ManagerFactory for NHibernate, the adds them to the specified .csproj file." %>
+
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="1a. Source Database" Description="The source database to generate from." %>
+
+<%@ Property Name="ExcludedColumns" Type="CodeSmith.CustomProperties.StringCollection" Default="" Optional="True" Category="1b. Database Options" Description="A collection of regular expressions; a match will excluded a column." %>
+<%@ Property Name="NeededTables" Type="SchemaExplorer.TableSchemaCollection" Optional="True" Category="1b. Database Options" Description="A collection of tables to be excluded during generation." Filter="SourceTable"%>
+<%@ Property Name="VersionColumn" Type="System.String" Default="^((R|r)ow)?(V|v)ersion$" Optional="True" Category="1b. Database Options" Description="A regular expression; a match will mark a column as a version column." %>
+<%@ Property Name="ModelNamespace" Type="System.String" Default="" Optional="True" Category="Strings" Description="This is a sample string property." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="Microsoft.Build.Engine" %>
+<%@ Assembly Name="Microsoft.Build.Utilities" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import NameSpace="System.IO" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+
+<%@ Map Name="SystemCSharp" Src="System-CSharpAlias" %>
+
+<%@ Register Name="EasyRecordModelTemplate" Template="EasyRecordModel.cst" %>
+<%@ Register Name="EasyRecordModelEditableTemplate" Template="EasyRecordModelEditable.cst" %>
+
+<script runat="template">
+
+public override void Render(TextWriter writer)
+{
+    string[] excludedColumns = (ExcludedColumns != null) ? ExcludedColumns.ToArray() : new string[0]{};
+	
+	if(NeededTables == null)
+		NeededTables = new TableSchemaCollection();
+	
+	foreach(TableSchema table in SourceDatabase.Tables)
+	//if(NeededTables.Contains(table))
+	//{
+        RedberEasyRecordModel(table);
+	//}
+	RegisterReferences();
+}
+
+private void RedberEasyRecordModel(TableSchema table)
+{
+    string className=table.Name;//GetClassName(table.Name);
+	string fileName = String.Format("{0}{1}.er.cs", GetFolder(""), className);
+    string editableFileName=String.Format("{0}{1}.cs", GetFolder(""), className);
+	EasyRecordModelTemplate erm = this.Create<EasyRecordModelTemplate>();
+    	
+    if(!File.Exists(editableFileName))
+	{
+		EasyRecordModelEditableTemplate emtpl = this.Create<EasyRecordModelEditableTemplate>();
+		emtpl.ModelNamespace = this.ModelNamespace;
+		emtpl.ClassName = className;
+		
+		emtpl.RenderToFile(GetOutputFile(editableFileName, null), true);
+	}
+    erm.ModelNamespace =  this.ModelNamespace;
+	erm.SourceTable = table;
+    erm.ClassName=className;
+    erm.RenderToFile(GetOutputFile(fileName, editableFileName), true);
+}
+
+private void RegisterReferences()
+{
+
+    //this.RegisterReference(Path.Combine(this.CodeTemplateInfo.DirectoryName, @"..\..\..\Common\NHibernate\NHibernate.dll"));
+}
+
+private OutputFile GetOutputFile(string fileName, string dependentUpon, params object[] metaData)
+{
+	OutputFile outputFile = new OutputFile(fileName);
+	
+	if(!String.IsNullOrEmpty(dependentUpon))
+		outputFile.DependentUpon = Path.GetFullPath(dependentUpon);
+	
+	if(metaData.Length % 2 != 0)
+		throw new Exception("Invalid Metadata: Provide 2 objects per entry, a String (key) followed by an Object.");
+	for(int x=0; x<metaData.Length; x+=2)
+    	outputFile.Metadata.Add(metaData[x].ToString(), metaData[x+1]);
+		
+	return outputFile;
+}
+private string GetFolder(string folder)
+{
+	if (folder.Contains(".") && !folder.EndsWith("."))
+        folder = folder.Substring(folder.LastIndexOf('.')+1);
+		
+	if(String.IsNullOrEmpty(folder))
+		folder = String.Empty;
+	else
+	{
+		if (!Directory.Exists(folder))
+            Directory.CreateDirectory(folder);
+			
+		if (!folder.EndsWith("\\"))
+			folder = String.Format("{0}\\", folder);
+	}
+	return folder;
+}
+
+private string GetClassName(string src)
+{
+    string[] args = src.Split('_');
+    System.Collections.Generic.List<string> result=new System.Collections.Generic.List<string>();
+    foreach (string arg in args)
+    {
+        if (arg.Length < 3)
+        {
+            result.Add(arg.ToUpper());
+        }
+        else
+        {
+            result.Add(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(arg));
+        }
+    }
+    return string.Join("_",result.ToArray());
+}
+</script>

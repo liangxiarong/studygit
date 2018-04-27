@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <variables>
+    <add key="ConnectionString1" value="server=localhost;user id=root;password=123456;port=3306;persistsecurityinfo=True;database=test;" />
+    <!--<add key="ConnectionString1" value="server=120.24.246.194,1433;Initial Catalog=QILOOLanguage;Persist Security Info=True;User ID=sa;Password=qiloo.sa;" />-->
+  </variables>
+  <propertySets>
+    <propertySet name="EasyRecordMaster.cs" output="EasyRecordMaster.cs" template="EasyRecordMaster.cst">
+      <property name="VersionColumn">^((R|r)ow)?(V|v)ersion$</property>
+      <property name="ModelNamespace">MySQL.Model</property>
+      <property name="SourceDatabase">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.MySQLSchemaProvider,SchemaExplorer.MySQLSchemaProvider</providerType>
+      </property>
+      <property name="NeededTables">
+        <connectionString>$(ConnectionString1)</connectionString>
+        <providerType>SchemaExplorer.MySQLSchemaProvider,SchemaExplorer.MySQLSchemaProvider</providerType>
+        <tableList>
+      <table>
+        <!--<owner></owner>-->
+        <name>tb1</name>
+      </table>
+    </tableList>
+      </property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

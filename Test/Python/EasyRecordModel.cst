@@ -1,0 +1,235 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Src="" Inherits="" Debug="False" CompilerVersion="v3.5" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context"  Description="Table that the stored procedures should be based on." %>
+<%@ Property Name="ModelNamespace" Type="System.String" Default="" Optional="True" Category="Strings" Description="This is a sample string property." %>
+<%@ Property Name="ClassName" Type="System.String" Default="" Optional="True" Category="Strings" Description="This is a sample string property." %>
+<%
+    if(string.IsNullOrEmpty(ClassName))ClassName=SourceTable.Name;
+%>
+from django.db import  models
+import json,datetime
+
+class <%=ClassName%>(models.Model):
+  <% for(int i=0;i<SourceTable.Columns.Count;i++){%>
+   <%if(!SourceTable.Columns[i].IsPrimaryKeyMember){%>
+   <%=SourceTable.Columns[i].Name%>=models.<%=GetCSharpDataType(SourceTable.Columns[i])%>
+  <%}}%>
+   def __unicode__(self):
+           return '%s' % (self.catname)
+
+   def toJSON(self):
+           fields = []
+           for field in self._meta.fields:
+               fields.append(field.name)
+
+           d = {}
+           for attr in fields:
+               if isinstance(getattr(self, attr), datetime.datetime):
+                   d[attr] = getattr(self, attr).strftime('%Y-%m-%d %H:%M:%S')
+               elif isinstance(getattr(self, attr), datetime.date):
+                   d[attr] = getattr(self, attr).strftime('%Y-%m-%d')
+               else:
+                   d[attr] = getattr(self, attr)
+
+           import json
+           return json.dumps(d)
+    
+
+
+
+
+<script runat="template">
+// My methods here.
+
+public string GetColumnSize(string genType,int iSize)
+{
+	switch(genType)
+	{
+		case "SqlDbType.NText" :
+		case "SqlDbType.Text":
+		case "SqlDbType.Image":
+			return "int.MaxValue";
+		default:
+			return iSize.ToString();
+	}
+}
+
+public string GetCSharpDataType(ColumnSchema col)
+{
+    string str="";
+    switch(col.DataType)
+    {
+        
+        case DbType.Int64:
+            
+            str= "BigIntegerField()";
+            break;   
+        case DbType.Boolean:
+            str= "BooleanField()";
+            break;
+        case DbType.AnsiStringFixedLength:
+            str= "CharField()";
+            break;
+        case DbType.DateTime:
+            str= "DateTimeField()";
+            break;
+        case DbType.Double:
+            str= "FloatField()";
+            break;
+        case DbType.Binary:
+            str= "BinaryField()";
+            break;
+        case DbType.Int32:
+            str= "IntegerField()";  
+            break;
+        case DbType.Currency:
+             str= "DecimalField(max_digits="+col.Size+",decimal_places=2)";
+            break;
+        case DbType.StringFixedLength:
+             str= "CharField(max_length="+col.Size+")";
+            break;
+      
+        case DbType.Decimal:
+            str= "DecimalField(max_digits="+col.Size+",decimal_places=2)";
+            break;
+        case DbType.String:
+             str= "CharField(max_length="+col.Size+")";
+            break;
+        case DbType.Single:
+            str= "real";
+            break;
+      
+        case DbType.Int16:
+            str= "IntegerField()";
+            break;
+      
+      
+        case DbType.Byte:
+            str= "SmallIntegerField()";
+            break;
+        case DbType.Guid:
+            str= "UUIDField()";
+            break;
+        case DbType.AnsiString:
+             str= "CharField(max_length="+col.Size+")";
+            break;
+         case DbType.DateTimeOffset:
+            str= "DateTimeField()";   
+            break;
+        default:
+           str= "CharField(max_length=100)";
+            break;
+    }
+    return str;
+}
+
+public string GetSqlDbType(ColumnSchema column)
+{
+    switch (column.NativeType.ToLower())
+    {
+        case "bigint": return "SqlDbType.BigInt";
+        case "binary": return "SqlDbType.Binary";
+        case "bit": return "SqlDbType.Bit";
+        case "char": return "SqlDbType.Char";
+        case "datetime": return "SqlDbType.DateTime";
+        case "decimal": return "SqlDbType.Decimal";
+        case "float": return "SqlDbType.Float";
+        case "image": return "SqlDbType.Image";
+        case "int": return "SqlDbType.Int";
+        case "money": return "SqlDbType.Money";
+        case "nchar": return "SqlDbType.NChar";
+        case "ntext": return "SqlDbType.NText";
+        case "numeric": return "SqlDbType.Decimal";
+        case "nvarchar": return "SqlDbType.NVarChar";
+        case "real": return "SqlDbType.Real";
+        case "smalldatetime": return "SqlDbType.SmallDateTime";
+        case "smallint": return "SqlDbType.SmallInt";
+        case "smallmoney": return "SqlDbType.SmallMoney";
+        case "sql_variant": return "SqlDbType.Variant";
+        case "sysname": return "SqlDbType.NChar";
+        case "text": return "SqlDbType.Text";
+        case "timestamp": return "SqlDbType.Timestamp";
+        case "tinyint": return "SqlDbType.TinyInt";
+        case "uniqueidentifier": return "SqlDbType.UniqueIdentifier";
+        case "varbinary": return "SqlDbType.VarBinary";
+        case "varchar": return "SqlDbType.VarChar";
+        case "datetimeoffset":return "SqlDbType.DateTimeOffset";   
+        default: return "__UNKNOWN__" + column.NativeType;
+    }
+}
+
+public string GetSqlDataType(ColumnSchema col)
+{
+    string str="";
+    switch(col.DataType)
+    {
+        case DbType.Int64:
+            str= "BigInt";
+            break;  
+        case DbType.Boolean:
+            str= "Bit";
+            break;
+        case DbType.AnsiStringFixedLength:
+            str= "Char";
+            break;
+        case DbType.DateTime:
+            str= "DateTime";
+            break;	
+        case DbType.Double:
+            str= "Double";
+            break;
+        case DbType.Binary:
+            str= "Image";
+            break;
+        case DbType.Int32:
+            str= "Int";  
+            break;
+        case DbType.Currency:
+            str= "Money";
+            break;
+        case DbType.StringFixedLength:
+            str= "NChar";
+            break;
+        //case DbType.String:
+        //   str= "ntext";
+        case DbType.Decimal:
+            str= "Decimal";
+            break;
+        case DbType.String:
+            str= "NVarChar";
+            break;
+        case DbType.Single:
+            str= "Real";
+            break;
+        //case DbType.DateTime:
+        //    str= "smalldatetime";    
+        case DbType.Int16:
+            str= "SmallInt";
+            break;
+        
+        case DbType.Byte:
+            str= "TinyInt";
+            break;
+        case DbType.Guid:
+            str= "Uniqueidentifier";
+            break;
+        case DbType.AnsiString:
+            str= "VarChar";   
+            break;
+        case DbType.DateTimeOffset:
+            str= "DateTimeOffset";   
+            break;
+        default:
+            str= "VarChar";
+            break;
+    }
+    return str;
+}
+
+</script>

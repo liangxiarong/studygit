@@ -1,0 +1,3199 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GPS.Common</name>
+    </assembly>
+    <members>
+        <member name="T:GPS.Common.alipay.Config">
+            <summary>
+            类名：Config
+            功能：基础配置类
+            详细：设置帐户有关信息及返回路径
+            版本：3.3
+            日期：2012-07-05
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            
+            如何获取安全校验码和合作身份者ID
+            1.用您的签约支付宝账号登录支付宝网站(www.alipay.com)
+            2.点击“商家服务”(https://b.alipay.com/order/myOrder.htm)
+            3.点击“查询合作者身份(PID)”、“查询安全校验码(Key)”
+            </summary>
+        </member>
+        <member name="P:GPS.Common.alipay.Config.Partner">
+            <summary>
+            获取或设置合作者身份ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.alipay.Config.Private_key">
+            <summary>
+            获取或设置商户的私钥
+            </summary>
+        </member>
+        <member name="P:GPS.Common.alipay.Config.Public_key">
+            <summary>
+            获取或设置支付宝的公钥
+            </summary>
+        </member>
+        <member name="P:GPS.Common.alipay.Config.Input_charset">
+            <summary>
+            获取字符编码格式
+            </summary>
+        </member>
+        <member name="P:GPS.Common.alipay.Config.Sign_type">
+            <summary>
+            获取签名方式
+            </summary>
+        </member>
+        <member name="T:GPS.Common.alipay.Core">
+            <summary>
+            类名：Core
+            功能：支付宝接口公用函数类
+            详细：该类是请求、通知返回两个文件所调用的公用函数核心处理文件，不需要修改
+            版本：3.3
+            修改日期：2012-07-05
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            </summary>
+        </member>
+        <member name="M:GPS.Common.alipay.Core.FilterPara(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            除去数组中的空值和签名参数并以字母a到z的顺序排序
+            </summary>
+            <param name="dicArrayPre">过滤前的参数组</param>
+            <returns>过滤后的参数组</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.alipay.Core.CreateLinkString(System.Collections.Generic.Dictionary{System.String,System.String})" -->
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.alipay.Core.CreateLinkStringUrlencode(System.Collections.Generic.Dictionary{System.String,System.String},System.Text.Encoding)" -->
+        <member name="M:GPS.Common.alipay.Core.LogResult(System.String)">
+            <summary>
+            写日志，方便测试（看网站需求，也可以改成把记录存入数据库）
+            </summary>
+            <param name="sWord">要写入日志里的文本内容</param>
+        </member>
+        <member name="M:GPS.Common.alipay.Core.GetAbstractToMD5(System.IO.Stream)">
+            <summary>
+            获取文件的md5摘要
+            </summary>
+            <param name="sFile">文件流</param>
+            <returns>MD5摘要结果</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.Core.GetAbstractToMD5(System.Byte[])">
+            <summary>
+            获取文件的md5摘要
+            </summary>
+            <param name="dataFile">文件流</param>
+            <returns>MD5摘要结果</returns>
+        </member>
+        <member name="T:GPS.Common.alipay.Notify">
+            <summary>
+            类名：Notify
+            功能：支付宝通知处理类
+            详细：处理支付宝各接口通知返回
+            版本：3.3
+            修改日期：2011-07-05
+            '说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            
+            //////////////////////注意/////////////////////////////
+            调试通知返回时，可查看或改写log日志的写入TXT里的数据，来检查通知返回是否正常 
+            </summary>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.GetRequestPost">
+            <summary>
+            获取支付宝POST过来通知消息，并以“参数名=参数值”的形式组成数组
+            </summary>
+            <returns>request回来的信息组成的数组</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.#ctor">
+            <summary>
+            构造函数
+            从配置文件中初始化变量
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <param name="notify_id">通知验证ID</param>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.Verify(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+             验证消息是否是支付宝发出的合法消息
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <param name="notify_id">通知验证ID</param>
+            <param name="sign">支付宝生成的签名结果</param>
+            <returns>验证结果</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.GetPreSignStr(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            获取待签名字符串（调试用）
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <returns>待签名字符串</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.GetSignVeryfy(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String)">
+            <summary>
+            获取返回时的签名验证结果
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <param name="sign">对比的签名结果</param>
+            <returns>签名验证结果</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.GetResponseTxt(System.String)">
+            <summary>
+            获取是否是支付宝服务器发来的请求的验证结果
+            </summary>
+            <param name="notify_id">通知验证ID</param>
+            <returns>验证结果</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.Notify.Get_Http(System.String,System.Int32)">
+            <summary>
+            获取远程服务器ATN结果
+            </summary>
+            <param name="strUrl">指定URL路径地址</param>
+            <param name="timeout">超时时间设置</param>
+            <returns>服务器ATN结果</returns>
+        </member>
+        <member name="T:GPS.Common.alipay.RSAFromPkcs8">
+            <summary>
+            类名：RSAFromPkcs8
+            功能：RSA解密、签名、验签
+            详细：该类对Java生成的密钥进行解密和签名以及验签专用类，不需要修改
+            版本：2.0
+            修改日期：2011-05-10
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            </summary>
+        </member>
+        <member name="M:GPS.Common.alipay.RSAFromPkcs8.sign(System.String,System.String,System.String)">
+            <summary>
+            签名
+            </summary>
+            <param name="content">需要签名的内容</param>
+            <param name="privateKey">私钥</param>
+            <param name="input_charset">编码格式</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.alipay.RSAFromPkcs8.verify(System.String,System.String,System.String,System.String)">
+            <summary>
+            验证签名
+            </summary>
+            <param name="content">需要验证的内容</param>
+            <param name="signedString">签名结果</param>
+            <param name="publicKey">公钥</param>
+            <param name="input_charset">编码格式</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.alipay.RSAFromPkcs8.decryptData(System.String,System.String,System.String)">
+            <summary>
+            用RSA解密
+            </summary>
+            <param name="resData">待解密字符串</param>
+            <param name="privateKey">私钥</param>
+            <param name="input_charset">编码格式</param>
+            <returns>解密结果</returns>
+        </member>
+        <member name="M:GPS.Common.alipay.RSAFromPkcs8.DecodePemPrivateKey(System.String)">
+            <summary>
+            解析java生成的pem文件私钥
+            </summary>
+            <param name="pemstr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GPS.Common.AliRefund.AliRefundConfig">
+            <summary>
+            类名：Config
+            功能：基础配置类
+            详细：设置帐户有关信息及返回路径
+            版本：3.3
+            日期：2012-07-05
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            
+            如何获取安全校验码和合作身份者ID
+            1.用您的签约支付宝账号登录支付宝网站(www.alipay.com)
+            2.点击“商家服务”(https://b.alipay.com/order/myOrder.htm)
+            3.点击“查询合作者身份(PID)”、“查询安全校验码(Key)”
+            </summary>
+        </member>
+        <member name="P:GPS.Common.AliRefund.AliRefundConfig.Partner">
+            <summary>
+            获取或设置合作者身份ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.AliRefund.AliRefundConfig.Key">
+            <summary>
+            获取或设交易安全校验码
+            </summary>
+        </member>
+        <member name="P:GPS.Common.AliRefund.AliRefundConfig.Input_charset">
+            <summary>
+            获取字符编码格式
+            </summary>
+        </member>
+        <member name="P:GPS.Common.AliRefund.AliRefundConfig.Sign_type">
+            <summary>
+            获取签名方式
+            </summary>
+        </member>
+        <member name="T:GPS.Common.AliRefund.Core">
+            <summary>
+            类名：Core
+            功能：支付宝接口公用函数类
+            详细：该类是请求、通知返回两个文件所调用的公用函数核心处理文件，不需要修改
+            版本：3.3
+            修改日期：2012-07-05
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            </summary>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Core.FilterPara(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            除去数组中的空值和签名参数并以字母a到z的顺序排序
+            </summary>
+            <param name="dicArrayPre">过滤前的参数组</param>
+            <returns>过滤后的参数组</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.AliRefund.Core.CreateLinkString(System.Collections.Generic.Dictionary{System.String,System.String})" -->
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.AliRefund.Core.CreateLinkStringUrlencode(System.Collections.Generic.Dictionary{System.String,System.String},System.Text.Encoding)" -->
+        <member name="M:GPS.Common.AliRefund.Core.LogResult(System.String)">
+            <summary>
+            写日志，方便测试（看网站需求，也可以改成把记录存入数据库）
+            </summary>
+            <param name="sWord">要写入日志里的文本内容</param>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Core.GetAbstractToMD5(System.IO.Stream)">
+            <summary>
+            获取文件的md5摘要
+            </summary>
+            <param name="sFile">文件流</param>
+            <returns>MD5摘要结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Core.GetAbstractToMD5(System.Byte[])">
+            <summary>
+            获取文件的md5摘要
+            </summary>
+            <param name="dataFile">文件流</param>
+            <returns>MD5摘要结果</returns>
+        </member>
+        <member name="T:GPS.Common.AliRefund.Notify">
+            <summary>
+            类名：Notify
+            功能：支付宝通知处理类
+            详细：处理支付宝各接口通知返回
+            版本：3.3
+            修改日期：2011-07-05
+            '说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            
+            //////////////////////注意/////////////////////////////
+            调试通知返回时，可查看或改写log日志的写入TXT里的数据，来检查通知返回是否正常 
+            </summary>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Notify.#ctor">
+            <summary>
+            构造函数
+            从配置文件中初始化变量
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <param name="notify_id">通知验证ID</param>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Notify.Verify(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+             验证消息是否是支付宝发出的合法消息
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <param name="notify_id">通知验证ID</param>
+            <param name="sign">支付宝生成的签名结果</param>
+            <returns>验证结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Notify.GetPreSignStr(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            获取待签名字符串（调试用）
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <returns>待签名字符串</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Notify.GetSignVeryfy(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String)">
+            <summary>
+            获取返回时的签名验证结果
+            </summary>
+            <param name="inputPara">通知返回参数数组</param>
+            <param name="sign">对比的签名结果</param>
+            <returns>签名验证结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Notify.GetResponseTxt(System.String)">
+            <summary>
+            获取是否是支付宝服务器发来的请求的验证结果
+            </summary>
+            <param name="notify_id">通知验证ID</param>
+            <returns>验证结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Notify.Get_Http(System.String,System.Int32)">
+            <summary>
+            获取远程服务器ATN结果
+            </summary>
+            <param name="strUrl">指定URL路径地址</param>
+            <param name="timeout">超时时间设置</param>
+            <returns>服务器ATN结果</returns>
+        </member>
+        <member name="T:GPS.Common.AliRefund.Submit">
+            <summary>
+            类名：Submit
+            功能：支付宝各接口请求提交类
+            详细：构造支付宝各接口表单HTML文本，获取远程HTTP数据
+            版本：3.3
+            修改日期：2011-07-05
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考
+            </summary>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.BuildRequestMysign(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            生成请求时的签名
+            </summary>
+            <param name="sPara">请求给支付宝的参数数组</param>
+            <returns>签名结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.BuildRequestPara(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            生成要请求给支付宝的参数数组
+            </summary>
+            <param name="sParaTemp">请求前的参数数组</param>
+            <returns>要请求的参数数组</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.BuildRequestParaToString(System.Collections.Generic.SortedDictionary{System.String,System.String},System.Text.Encoding)">
+            <summary>
+            生成要请求给支付宝的参数数组
+            </summary>
+            <param name="sParaTemp">请求前的参数数组</param>
+            <param name="code">字符编码</param>
+            <returns>要请求的参数数组字符串</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.BuildRequest(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            建立请求，以表单HTML形式构造（默认）
+            </summary>
+            <param name="sParaTemp">请求参数数组</param>
+            <param name="strMethod">提交方式。两个值可选：post、get</param>
+            <param name="strButtonValue">确认按钮显示文字</param>
+            <returns>提交表单HTML文本</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.BuildRequest(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果
+            </summary>
+            <param name="sParaTemp">请求参数数组</param>
+            <returns>支付宝处理结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.BuildRequest(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String,System.String,System.Byte[],System.String,System.Int32)">
+            <summary>
+            建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果，带文件上传功能
+            </summary>
+            <param name="sParaTemp">请求参数数组</param>
+            <param name="strMethod">提交方式。两个值可选：post、get</param>
+            <param name="fileName">文件绝对路径</param>
+            <param name="data">文件数据</param>
+            <param name="contentType">文件内容类型</param>
+            <param name="lengthFile">文件长度</param>
+            <returns>支付宝处理结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.Submit.Query_timestamp">
+            <summary>
+            用于防钓鱼，调用接口query_timestamp来获取时间戳的处理函数
+            注意：远程解析XML出错，与IIS服务器配置有关
+            </summary>
+            <returns>时间戳字符串</returns>
+        </member>
+        <member name="T:GPS.Common.AliRefund.AlipayMD5">
+            <summary>
+            类名：MD5
+            功能：MD5加密
+            版本：3.3
+            修改日期：2012-07-05
+            说明：
+            以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+            该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+            </summary>
+        </member>
+        <member name="M:GPS.Common.AliRefund.AlipayMD5.Sign(System.String,System.String,System.String)">
+            <summary>
+            签名字符串
+            </summary>
+            <param name="prestr">需要签名的字符串</param>
+            <param name="key">密钥</param>
+            <param name="_input_charset">编码格式</param>
+            <returns>签名结果</returns>
+        </member>
+        <member name="M:GPS.Common.AliRefund.AlipayMD5.Verify(System.String,System.String,System.String,System.String)">
+            <summary>
+            验证签名
+            </summary>
+            <param name="prestr">需要签名的字符串</param>
+            <param name="sign">签名结果</param>
+            <param name="key">密钥</param>
+            <param name="_input_charset">编码格式</param>
+            <returns>验证结果</returns>
+        </member>
+        <member name="T:GPS.Common.BeanUtils">
+            <summary>
+            BeanUtils提供用于拷贝对象中的具体字段的值的方法
+            </summary>
+        </member>
+        <member name="M:GPS.Common.BeanUtils.CopyObject(System.Object,System.Object@)">
+            <summary>
+            把源对象里的各个字段的内容直接赋值给目标对象（只是字段复制，两个对象的字段名和类型都必须一致）
+            </summary>
+            <param name="dest">目标对象</param>
+            <param name="src">源对象</param>
+        </member>
+        <member name="M:GPS.Common.BeanUtils.CopyProperty(System.Object@,System.Object,System.String)">
+            <summary>
+            从一个对象里复制属性到另一个对象的同名属性
+            </summary>
+            <param name="dest">目标对象</param>
+            <param name="src">源对象</param>
+            <param name="fieldName">要复制的属性名字</param>
+        </member>
+        <member name="M:GPS.Common.BeanUtils.setProperty(System.Object@,System.String,System.Object)">
+            <summary>
+            用于设置对象的属性值
+            </summary>
+            <param name="dest">目标对象</param>
+            <param name="fieldName">属性名字</param>
+            <param name="value">属性里要设置的值</param>
+        </member>
+        <member name="M:GPS.Common.BeanUtils.printMethod(System.Object@)">
+            <summary>
+            反射打印出对象有的方法以及调用参数
+            </summary>
+            <param name="obj">传入的对象</param>
+        </member>
+        <member name="T:GPS.Common.CacheName">
+            <summary>
+            缓存key
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CacheName.Parametersetlist">
+            <summary>
+            参数配置表缓存
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CacheName.Expresscomlist">
+            <summary>
+            快递公司表缓存
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CacheName.Languagelist">
+            <summary>
+            多语言主表
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CacheName.LanguageDetaillist">
+            <summary>
+            多语言附表
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CacheName.CountryNamesList">
+            <summary>
+            多语言附表
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpHelper.CreatePostHttpResponse(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Int32,System.String,System.Net.CookieContainer,System.String)">
+            创建POST方式的HTTP请求  
+        </member>
+        <member name="M:GPS.Common.HttpHelper.GetResponseString(System.Net.HttpWebResponse)">
+            <summary>
+            获取请求的数据
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpHelper.GetHttpResponse(System.String,System.Int32,System.Net.CookieContainer,System.String)">
+            
+             Get请求
+             
+             
+             字符串
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.SmsApiHelper.CreateFormData(System.Collections.Generic.SortedDictionary{System.String,System.Object})" -->
+        <!-- Badly formed XML comment ignored for member "T:GPS.Common.CommonEqualityComparer`2" -->
+        <member name="M:GPS.Common.ConvertHelper`1.ConvertToList(System.Data.DataTable)">
+            <summary>  
+            利用反射和泛型  
+            </summary>  
+            <param name="dt"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:GPS.Common.ConvertHelper`1.ConvertToIQueryable(System.Data.DataTable)">
+            <summary>  
+            利用反射和泛型  
+            </summary>  
+            <param name="dt"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:GPS.Common.ConvertHelper`1.ToDictionary(`0)">
+            <summary>  
+              
+            将对象属性转换为key-value对  
+            </summary>  
+            <param name="o"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.ToGlobalStrg(System.DateTime)">
+            <summary>
+            常规日期短时间格式
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.ToUtc(System.String)">
+            <summary>
+            将时间字符串转为UTC +0.00
+            </summary>
+            <param name="dateStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.ToUtc(System.DateTime)">
+            <summary>
+            将时间转为UTC +0.00
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.ToGlobalStr(System.DateTime,System.String)">
+            <summary>
+            完整长时间格式
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.ToUtc(System.String,System.String)">
+            <summary>
+            将时间字符串转为UTC +0.00
+            </summary>
+            <param name="dateStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.ToDateTimeInt(System.DateTime)">
+            <summary>
+            将c# DateTime时间格式转换为Unix时间戳格式
+            </summary>
+            <param name="time">时间</param>
+            <returns>long</returns>
+        </member>
+        <member name="M:GPS.Common.DateTimeUtil.UtcToString(System.String)">
+            <summary>
+            去掉UTC时间
+            </summary>
+            <param name="dateStr"></param>
+            <param name="timeZoneInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GPS.Common.DistinctExtensions">
+            <summary>
+            Distinct扩展方法
+            </summary>
+        </member>
+        <member name="F:GPS.Common.EarthUtils.vincentyConstantA">
+            VincentyConstants 
+            Constants for Vincenty functions. 
+        </member>
+        <member name="M:GPS.Common.EarthUtils.getDistance(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            根据两个点坐标计算它们之间的距离（按照圆球体计算，粗略计算） 
+            </summary>
+            <param name="y1"></param>
+            <param name="x1"></param>
+            <param name="y2"></param>
+            <param name="x2"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:GPS.Common.EarthUtils.distVincenty(System.Double,System.Double,System.Double,System.Double)">
+            Given two objects representing points with geographic coordinates, this 
+                calculates the distance between those points on the surface of an 
+                ellipsoid.  
+            
+            Returns: 
+            The distance (in km) between the two input points as measured on an 
+                ellipsoid.  Note that the input point objects must be in geographic 
+                coordinates (decimal degrees) and the return distance is in kilometers. 
+            <summary>
+            按照椭球体计算，精确计算         
+            </summary>
+            <param name="y1"></param>
+            <param name="x1"></param>
+            <param name="y2"></param>
+            <param name="x2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.EarthUtils.degtoRad(System.Double)">
+            Convert degrees to radian 
+            
+            @param val Value to convert  
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.Export(System.Data.DataTable,System.String,System.String,System.String,System.String[],System.String[])">
+            <summary>   
+            DataTable导出到Excel文件   
+            </summary>   
+            <param name="dtSource">源DataTable</param>   
+            <param name="strHeaderText">表头文本</param>   
+            <param name="strFileName">保存位置</param>
+            <param name="strSheetName">工作表名称</param>
+            <Author></Author>   
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.Export(System.Data.DataTable,System.String,System.String,System.String[],System.String[])">
+            <summary>   
+            DataTable导出到Excel的MemoryStream   
+            </summary>   
+            <param name="dtSource">源DataTable</param>   
+            <param name="strHeaderText">表头文本</param>   
+            <param name="strSheetName">工作表名称</param>
+            <Author></Author>   
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.ExportByWeb(System.Data.DataTable,System.String,System.String)">
+            <summary>   
+            WEB导出DataTable到Excel   
+            </summary>   
+            <param name="dtSource">源DataTable</param>   
+            <param name="strHeaderText">表头文本</param>   
+            <param name="strFileName">文件名</param>   
+            <Author>柳永法 http://www.yongfa365.com/ 2010-5-8 22:21:41</Author>   
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.ExportByWeb(System.Data.DataTable,System.String,System.String,System.String[],System.String[])">
+            <summary>
+            WEB导出DataTable到Excel
+            </summary>
+            <param name="dtSource">源DataTable</param>
+            <param name="strHeaderText">表头文本</param>
+            <param name="strFileName">输出文件名，包含扩展名</param>
+            <param name="oldColumnNames">要导出的DataTable列数组</param>
+            <param name="newColumnNames">导出后的对应列名</param>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.ExportByWeb(System.Data.DataTable,System.String,System.String,System.String)">
+            <summary>
+            WEB导出DataTable到Excel
+            </summary>
+            <param name="dtSource">源DataTable</param>
+            <param name="strHeaderText">表头文本</param>
+            <param name="strFileName">输出文件名</param>
+            <param name="strSheetName">工作表名称</param>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.ExportByWeb(System.Data.DataTable,System.String,System.String,System.String,System.String[],System.String[])">
+            <summary>
+            导出DataTable到Excel
+            </summary>
+            <param name="dtSource">要导出的DataTable</param>
+            <param name="strHeaderText">标题文字</param>
+            <param name="strFileName">文件名，包含扩展名</param>
+            <param name="strSheetName">工作表名</param>
+            <param name="oldColumnNames">要导出的DataTable列数组</param>
+            <param name="newColumnNames">导出后的对应列名</param>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.Import(System.String)">
+            <summary>读取excel   
+            默认第一行为表头，导入第一个工作表
+            </summary>   
+            <param name="strFileName">excel文档路径</param>   
+            <returns></returns>   
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.Import(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>读取excel   
+            默认第一行为表头，导入第一个工作表
+            </summary>   
+            <param name="strFileName">excel文档路径</param>   
+            <returns></returns>   
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.RenderDataTableFromExcel(System.String,System.String,System.Int32)">
+            <summary>
+            从Excel中获取数据到DataTable
+            </summary>
+            <param name="strFileName">Excel文件全路径(服务器路径)</param>
+            <param name="SheetName">要获取数据的工作表名称</param>
+            <param name="HeaderRowIndex">工作表标题行所在行号(从0开始)</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.RenderDataTableFromExcel(System.String,System.Int32,System.Int32)">
+            <summary>
+            从Excel中获取数据到DataTable
+            </summary>
+            <param name="strFileName">Excel文件全路径(服务器路径)</param>
+            <param name="SheetIndex">要获取数据的工作表序号(从0开始)</param>
+            <param name="HeaderRowIndex">工作表标题行所在行号(从0开始)</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.RenderDataTableFromExcel(System.IO.Stream,System.String,System.Int32)">
+            <summary>
+            从Excel中获取数据到DataTable
+            </summary>
+            <param name="ExcelFileStream">Excel文件流</param>
+            <param name="SheetName">要获取数据的工作表名称</param>
+            <param name="HeaderRowIndex">工作表标题行所在行号(从0开始)</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.RenderDataTableFromExcel(System.IO.Stream,System.Int32,System.Int32)">
+            <summary>
+            从Excel中获取数据到DataTable
+            </summary>
+            <param name="ExcelFileStream">Excel文件流</param>
+            <param name="SheetIndex">要获取数据的工作表序号(从0开始)</param>
+            <param name="HeaderRowIndex">工作表标题行所在行号(从0开始)</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.ExcelHelper.RenderDataTableFromExcel(NPOI.SS.UserModel.IWorkbook,System.String,System.Int32)">
+            <summary>
+            从Excel中获取数据到DataTable
+            </summary>
+            <param name="workbook">要处理的工作薄</param>
+            <param name="SheetName">要获取数据的工作表名称</param>
+            <param name="HeaderRowIndex">工作表标题行所在行号(从0开始)</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.GpsExtentions.CopyTo``1(System.Object,``0)">
+            <summary>  
+            Copy Propertys and Fileds   
+            拷贝属性和公共字段  
+            </summary>  
+            <typeparam name="T"> </typeparam>  
+            <param name="source"></param>  
+            <param name="target"></param>  
+        </member>
+        <member name="M:GPS.Common.GpsExtentions.ToPinyin(System.String)">
+            <summary>
+            获取拼音
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.GpsExtentions.ToUnixTimeStamp(System.DateTime,System.Int32)">
+            <summary>
+            将c# DateTime时间格式转换为Unix时间戳格式
+            </summary>
+            <param name="time">时间</param>
+            <returns>long</returns>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.QueryPostWebService(System.String,System.String,System.Collections.Hashtable)">
+            <summary>
+            需要WebService支持Post调用
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.QueryPostWebService(System.String,System.String,System.Collections.Hashtable,System.Net.CookieContainer)">
+            <summary>
+            需要WebService支持Post调用
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.QueryGetWebService(System.String,System.String,System.Collections.Hashtable)">
+            <summary>
+            需要WebService支持Get调用
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.QueryGetWebService(System.String,System.Collections.Hashtable)">
+            <summary>
+            需要WebService支持Get调用
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.GetCookieByPost(System.String,System.String,System.Collections.Hashtable)">
+            <summary>
+            需要WebService支持Post调用
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.QuerySoapWebService(System.String,System.String,System.Collections.Hashtable)">
+            <summary>
+            通用WebService调用(Soap),参数Pars为String类型的参数名、参数值
+            </summary>
+        </member>
+        <member name="M:GPS.Common.HttpRequessHelp.SetWebRequest(System.Net.HttpWebRequest)">
+            <summary>
+            设置凭证与超时时间
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:GPS.Common.jdPay.DictionaryExtensionMethodClass.AddOrPeplace``2(System.Collections.Generic.SortedDictionary{``0,``1},``0,``1)">
+            <summary>
+            SortedDictionary的扩展方法，将键和值添加或替换到字典中：如果不存在，则添加；存在，则替换
+            </summary>
+        </member>
+        <member name="M:GPS.Common.jdPay.DictionaryExtensionMethodClass.getVaule``2(System.Collections.Generic.SortedDictionary{``0,``1},``0)">
+            <summary>
+            SortedDictionary的扩展方法，根据key获取对应的值，如果不存在，返回null
+            </summary>
+        </member>
+        <member name="M:GPS.Common.jdPay.DictionaryExtensionMethodClass.AddOrPeplace``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
+            <summary>
+            Dictionary的扩展方法，将键和值添加或替换到字典中：如果不存在，则添加；存在，则替换
+            </summary>
+        </member>
+        <member name="M:GPS.Common.jdPay.DictionaryExtensionMethodClass.getVaule``2(System.Collections.Generic.Dictionary{``0,``1},``0)">
+            <summary>
+            Dictionary的扩展方法，根据key获取对应的值，如果不存在，返回null
+            </summary>
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.AsynNotifyResponse.tradeNum">
+            交易流水  数字或字母
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.AsynNotifyResponse.tradeType">
+            0:消费,1:退款
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.AsynNotifyResponse.payList">
+            交易列表
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.AsynNotifyResponse.oTradeNum">
+            ================= 退款相关字段  =================*
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PaymentTradeResponse.tradeNum">
+            交易流水  数字或字母
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PaymentTradeResponse.tradeType">
+            交易类型
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PaymentTradeResponse.note">
+            交易备注
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PaymentTradeResponse.amount">
+            支付总金额
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PaymentTradeResponse.status">
+            交易返回状态  成功：2，失败，3
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PaymentTradeResponse.payList">
+            交易列表
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeDetail.cardHolderName">
+            持卡人人姓名  掩码显示（隐去第一位）
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeDetail.cardHolderMobile">
+            持卡人手机号  掩码显示（手机号的前三位与后四位）
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeDetail.cardHolderType">
+            证件类型   ID("0", "身份证"), PASSPORT("1", "护照"), OFFICER("2", "军官证"), SOLDIER("3", "士兵证"), TWHK_PASSPORT("4", "港奥台通行证"), TEMP_ID("5", "临时身份证"), HOUSEHOLDREGISTER("6", "户口本"), OTHER("7", "其它类型证件")
+        </member>
+        <member name="F:GPS.Common.jdPay.responseObj.PayTradeDetail.cardHolderId">
+            身份证号
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeDetail.cardNo">
+            卡号  掩码显示（前六位及后四位）
+        </member>
+        <member name="F:GPS.Common.jdPay.responseObj.PayTradeDetail.bankCode">
+            银行编码
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeDetail.cardType">
+            银行卡类型   DEBIT_CARD：借记卡CREDIT_CARD：信用卡SEMI_CREDIT_CARD：准贷记卡
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeDetail.payMoney">
+            支付金额
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeVo.payType">
+            支付方式
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeVo.amount">
+            交易金额
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeVo.currency">
+            交易币种
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeVo.tradeTime">
+            交易时间 yyyyMMddHHmmss
+        </member>
+        <member name="P:GPS.Common.jdPay.responseObj.PayTradeVo.detail">
+            支付明细，不同支付方式的明细信息也不同
+        </member>
+        <member name="T:GPS.Common.jdPay.signature.Des3">
+            <summary>
+            DES3加密解密
+            </summary>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.Des3.Des3EncodeCBC(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            DES3 CBC模式加密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="iv">IV</param>
+            <param name="data">明文的byte数组</param>
+            <returns>密文的byte数组</returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.Des3.Des3DecodeCBC(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            DES3 CBC模式解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="iv">IV</param>
+            <param name="data">密文的byte数组</param>
+            <returns>明文的byte数组</returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.Des3.Des3EncodeECB(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            DES3 ECB模式加密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="iv">IV(当模式为ECB时，IV无用)</param>
+            <param name="str">明文的byte数组</param>
+            <returns>密文的byte数组</returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.Des3.Des3DecodeECB(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            DES3 ECB模式解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="iv">IV(当模式为ECB时，IV无用)</param>
+            <param name="str">密文的byte数组</param>
+            <returns>明文的byte数组</returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.RSACoder.encryptByPrivateKey(System.String,System.String)">
+            <summary>
+            私钥加密 .Net平台默认是使用公钥进行加密，私钥进行解密。私钥加密需要自己实现或者使用第三方dll
+            </summary>
+            <param name="data"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.RSACoder.decryptByPublicKey(System.String,System.String)">
+            <summary>
+            用公钥解密
+            </summary>
+            <param name="data"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.RSACoder.RSAPrivateKeyJava2DotNet(System.String)">
+            <summary>
+            RSA私钥格式转换，java->.net
+            </summary>
+            <param name="privateKey">java生成的RSA私钥</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.RSACoder.RSAPublicKeyJava2DotNet(System.String)">
+            <summary>
+            RSA公钥格式转换，java->.net
+            </summary>
+            <param name="publicKey">java生成的公钥</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.SignUtil.signString(System.Collections.Generic.SortedDictionary{System.String,System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            拼装需要签名原串
+            </summary>
+            <param name="dic"></param>
+            <param name="unSignKeyList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.XMLUtil.ConvertXmlToString(System.Xml.XmlDocument)">
+            <summary>  
+            将XmlDocument转化为string  
+            </summary>  
+            <param name="xmlDoc"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:GPS.Common.jdPay.signature.XMLUtil.Deserialize``1(System.Type,System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="type">类型</param>
+            <param name="xml">XML字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.KdApiHelp.orderTracesSubByJson(GPS.Model.KDApiModel.orderTracesSubRequessModel)">
+            <summary>
+            Json方式  物流信息订阅
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.KdApiHelp.getOrderTracesByJson(GPS.Model.KDApiModel.OrderTracesRequessModel)">
+            <summary>
+            Json方式 查询订单物流轨迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.KdApiHelp.sendPost(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Post方式提交数据，返回网页的源代码
+            </summary>
+            <param name="url">发送请求的 URL</param>
+            <param name="param">请求的参数集合</param>
+            <returns>远程资源的响应结果</returns>
+        </member>
+        <member name="M:GPS.Common.KdApiHelp.encrypt(System.String,System.String,System.String)">
+            <summary>
+            电商Sign签名
+            </summary>
+            <param name="content">内容</param>
+            <param name="keyValue">Appkey</param>
+            <param name="charset">URL编码 </param>
+            <returns>DataSign签名</returns>
+        </member>
+        <member name="M:GPS.Common.KdApiHelp.MD5(System.String,System.String)">
+            <summary>
+             字符串MD5加密
+            </summary>
+            <param name="str">要加密的字符串</param>
+            <param name="charset">编码方式</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:GPS.Common.KdApiHelp.base64(System.String,System.String)">
+            <summary>
+            base64编码
+            </summary>
+            <param name="str">内容</param>
+            <param name="charset">编码方式</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.LogHelper.GetInstance">
+            <summary>
+            初始化
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.LogHelper.GetInstance(System.String)">
+            <summary>
+            初始化
+            </summary>
+            <param name="configPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.LogHelper.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configPath"></param>
+        </member>
+        <member name="P:GPS.Common.Model.ResponsePageModel`1.Total">
+            <summary>
+            总记录数
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.ListModel`1.List">
+            <summary>
+            数据列表
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.ResultInfo`1.rType">
+            <summary>
+            操作结果
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.ResultInfo`1.rMessage">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.ResultInfo`1.rData">
+            <summary>
+            返回数据
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.BackResult.rType">
+            <summary>
+            操作结果
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.BackResult.rMessage">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Model.BackResult.rData">
+            <summary>
+            返回数据
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.IsSystemUser">
+            <summary>
+            是否系统管理员
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.PageNumberString">
+            <summary>
+            页码
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.PageNumberString2">
+            <summary>
+            页码2
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.CurrentPage">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.CurrentPage2">
+            <summary>
+            当前页数
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.RecordCount">
+            <summary>
+            数据总条数
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.RecordCount2">
+            <summary>
+            数据总条数
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.PageSize">
+            <summary>
+            每页数据条数
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.PageSize2">
+            <summary>
+            每页数据条数
+            </summary>
+        </member>
+        <member name="F:GPS.Common.BasePage.Message">
+            <summary>
+            提示信息
+            </summary>
+        </member>
+        <member name="M:GPS.Common.BasePage.BuildPagerNumbers">
+            <summary>
+            生成页码
+            </summary>
+        </member>
+        <member name="M:GPS.Common.BasePage.BuildPagerNumbers(System.Int32)">
+            <summary>
+            生成页码
+            </summary>
+        </member>
+        <member name="M:GPS.Common.BasePage.BuildPagerNumbers(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            生成页码
+            </summary>
+            <param name="pageSize">一页显示的条数</param>
+            <param name="recordCount">总共条数</param>
+            <returns>页码</returns>
+        </member>
+        <member name="T:GPS.Common.CacheHelper">
+            <summary>
+            系统缓存辅助类
+            </summary>
+        </member>
+        <member name="M:GPS.Common.CacheHelper.GetCache(System.String)">
+            <summary>
+            获取数据缓存
+            </summary>
+            <param name="CacheKey">键</param>
+        </member>
+        <member name="M:GPS.Common.CacheHelper.SetCache(System.String,System.Object)">
+            <summary>
+            设置数据缓存
+            </summary>
+        </member>
+        <member name="M:GPS.Common.CacheHelper.SetCache(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            设置数据缓存
+            </summary>
+        </member>
+        <member name="M:GPS.Common.CacheHelper.SetCache(System.String,System.Object,System.DateTime,System.TimeSpan)">
+            <summary>
+            设置数据缓存
+            </summary>
+        </member>
+        <member name="M:GPS.Common.CacheHelper.RemoveAllCache(System.String)">
+            <summary>
+            移除指定数据缓存
+            </summary>
+        </member>
+        <member name="M:GPS.Common.CacheHelper.RemoveAllCache">
+            <summary>
+            移除全部缓存
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Common.ToStringNoSSWR(System.Double,System.Int32)">
+            <summary>
+            截取小数 但不四舍五入
+            </summary>
+            <param name="a">双精度</param>
+            <param name="n">第几位小数</param>
+        </member>
+        <member name="M:GPS.Common.Common.bd_encrypt(System.Double,System.Double,System.Double@,System.Double@)">
+            <summary>
+            将 GCJ-02(火星坐标) 坐标转换成 BD-09(百度坐标) 坐标
+            </summary>
+            <param name="gg_lat"></param>
+            <param name="gg_lon"></param>
+            <param name="bd_lat"></param>
+            <param name="bd_lon"></param>
+        </member>
+        <member name="M:GPS.Common.Common.bd_decrypt(System.Double,System.Double,System.Double@,System.Double@)">
+            <summary>
+            将 BD-09(百度坐标) 坐标转换成 GCJ-02(火星坐标) 坐标
+            </summary>
+            <param name="bd_lat"></param>
+            <param name="bd_lon"></param>
+            <param name="gg_lat"></param>
+            <param name="gg_lon"></param>
+        </member>
+        <member name="M:GPS.Common.Common.GetAgeByCardId(System.String)">
+            <summary>
+            通过身份证计算年龄(18长度身份证号)
+            </summary>
+            <param name="idcard">身份证号</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Common.GetSexByCardId(System.String)">
+            <summary>
+            通过身份证获取性别(18长度身份证号)
+            </summary>
+            <param name="idcard">18长度身份证号</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Common.GetBirthdayByCardId(System.String)">
+            <summary>
+            获取身份证中日期部分
+            </summary>
+            <param name="idcard"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Common.getSignature(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            计算参数签名
+            </summary>
+            <param name="params">请求参数集，所有参数必须已转换为字符串类型</param>
+            <param name="secret">签名密钥</param>
+            <returns>签名</returns>
+        </member>
+        <member name="M:GPS.Common.CommonHelper.PosInsertStr(GPS.Common.Posion,GPS.Model.tTerminal)">
+            <summary>
+            插入定位数据
+            </summary>
+            <param name="pos"></param>
+            <param name="_Terminal"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.EpType">
+            <summary>
+            进出电子围栏
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.GpsState">
+            <summary>
+            定位状态
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.ProductType">
+            <summary>
+            产品类型
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.isOnline">
+            <summary>
+            是否在线
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.userType">
+            <summary>
+            用户类型
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Channel">
+            <summary>
+            通信渠道
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.TerminalType">
+            <summary>
+            终端类型
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.sex">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.SMSMethodType">
+            <summary>
+            短信类型
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.AppRegister">
+            <summary>
+            手机App注册
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.InviteNotice2">
+            <summary>
+            邀请注册
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.ForgetPwd">
+            <summary>
+            忘记密码
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.ResetPwd">
+            <summary>
+            重置密码
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.Custom">
+            <summary>
+            自定义
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.NoticAdmin">
+            <summary>
+            给管理员提示信息
+            </summary>
+        </member>
+        <member name="F:GPS.Common.CommonEnum.SMSMethodType.Login">
+            <summary>
+            验证码登录
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.OrderState">
+            <summary>
+            其他来源订单状态
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.ReState">
+            <summary>
+            退货状态
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.InsuranceState">
+            <summary>
+            自主购买保险保单状态
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Insurance_State">
+            <summary>
+            保单状态
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Product_Srouce">
+            <summary>
+            来源相关
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Product_State">
+            <summary>
+            货号状态
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Recharge_for">
+            <summary>
+            充值内容
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Recharge_Yearlevel">
+            <summary>
+            年费套餐
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Recharge_Insurance">
+            <summary>
+            保险套餐
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Recharge_Source">
+            <summary>
+            支付通道
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Recharge_Status">
+            <summary>
+            支付结果
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CommonEnum.Pay_Status">
+            <summary>
+            支付状态
+            </summary>
+        </member>
+        <member name="F:GPS.Common.PermissionCustomMode.Enforce">
+            <summary>
+            验证
+            </summary>
+        </member>
+        <member name="F:GPS.Common.PermissionCustomMode.Ignore">
+            <summary>
+            忽略
+            </summary>
+        </member>
+        <member name="P:GPS.Common.CookieClass.CookieDomain">
+            <summary>
+            Cookie Domain
+            </summary>
+        </member>
+        <member name="M:GPS.Common.CookieClass.GetCookieValue(System.String,System.String)">
+            <summary>
+            根据Cookie 名称获取其值( 解密 )
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.CookieClass.GetCookie(System.String)">
+            <summary>
+            根据Cookie 名称获取其值( 解密 )
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.CookieClass.GetCookieNo(System.String)">
+            <summary>
+            根据Cookie 名称获取其值( 解密 )
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.CookieClass.GetCookie(System.String,System.Web.HttpContext)">
+            <summary>
+            根据Cookie 名称获取其值( 解密 )
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.CookieClass.SetCookie(System.String,System.String,System.String)">
+            <summary>
+             根据Cookie 名称和其值( 加密 )设置 Cookie
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <param name="strCookieText">Cookie 文本</param>
+            <param name="strCookieValue">Cookie 值</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.SetCookie(System.String,System.String)">
+            <summary>
+             根据Cookie 名称和其值( 加密 )设置 Cookie
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <param name="strCookieText">Cookie 文本</param>
+            <param name="strCookieValue">Cookie 值</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.SetDomainCookie(System.String,System.String)">
+            <summary>
+             根据Cookie 名称和其值( 加密 )设置 Cookie -- 带域(.BuySKU.com)
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <param name="strCookieText">Cookie 文本</param>
+            <param name="strCookieValue">Cookie 值</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.DeleteDomainCookie(System.String)">
+            <summary>
+             根据Cookie 名称删除 Cookie -- 带域(.BuySKU.com)
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.SetCookie(System.String,System.String,System.Int32)">
+            <summary>
+            设置Cookie
+            </summary>
+            <param name="strCookieName">名</param>
+            <param name="strCookieValue">值</param>
+            <param name="nMins">保存时间(分钟)</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.SetCookie(System.String,System.String,System.String,System.Int32)">
+            <summary>
+             根据Cookie 名称和其值( 加密 )设置 Cookie
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <param name="strCookieText">Cookie 文本</param>
+            <param name="strCookieValue">Cookie 值</param>
+            <param name="nDays">保存时间</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.DeleteRememberCookie(System.String)">
+            <summary>
+             根据Cookie 名称删除 Cookie
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <param name="strCookieText">Cookie 文本</param>
+        </member>
+        <member name="M:GPS.Common.CookieClass.DeleteCookie(System.String)">
+            <summary>
+             根据Cookie 名称删除 Cookie
+            </summary>
+            <param name="strCookieName">Cookie 名称</param>
+            <param name="strCookieText">Cookie 文本</param>
+        </member>
+        <member name="T:GPS.Common.DESEncrypt">
+            <summary>
+            DES加密/解密类。
+            </summary>
+        </member>
+        <member name="P:GPS.Common.DESEncrypt.EncryptKey">
+            <summary>
+            获取加密的 Key
+            </summary>
+        </member>
+        <member name="M:GPS.Common.DESEncrypt.Encrypt(System.String)">
+            <summary>
+            加密
+            </summary>
+            <param name="Text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DESEncrypt.Encrypt(System.String,System.String)">
+            <summary> 
+            加密数据 
+            </summary> 
+            <param name="Text"></param> 
+            <param name="sKey"></param> 
+            <returns></returns> 
+        </member>
+        <member name="M:GPS.Common.DESEncrypt.Decrypt(System.String)">
+            <summary>
+            解密
+            </summary>
+            <param name="Text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.DESEncrypt.Decrypt(System.String,System.String)">
+            <summary> 
+            解密数据 
+            </summary> 
+            <param name="Text"></param> 
+            <param name="sKey"></param> 
+            <returns></returns> 
+        </member>
+        <member name="T:GPS.Common.GpsCorrect">
+            <summary>
+            gps纠偏算法，适用于google,高德体系的地图
+            </summary>
+        </member>
+        <member name="M:GPS.Common.GpsCorrect.GetODBOff(System.Double,System.Double)">
+            <summary>
+            百度纠偏
+            </summary>
+            <param name="longitude"></param>
+            <param name="latitude"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.GpsCorrect.ToStringNoSSWR(System.Double,System.Int32)">
+            <summary>
+            截取小数 但不四舍五入
+            </summary>
+            <param name="a">双精度</param>
+            <param name="n">第几位小数</param>
+        </member>
+        <member name="M:GPS.Common.GpsCorrect.bd_encrypt(System.Double,System.Double,System.Double@,System.Double@)">
+            <summary>
+            将 GCJ-02(火星坐标) 坐标转换成 BD-09(百度坐标) 坐标
+            </summary>
+            <param name="gg_lat">纬度</param>
+            <param name="gg_lon">经度</param>
+            <param name="bd_lat"></param>
+            <param name="bd_lon"></param>
+        </member>
+        <member name="M:GPS.Common.GpsCorrect.bd_decrypt(System.Double,System.Double,System.Double@,System.Double@)">
+            <summary>
+            将 BD-09(百度坐标) 坐标转换成 GCJ-02(火星坐标) 坐标
+            </summary>
+            <param name="bd_lat"></param>
+            <param name="bd_lon"></param>
+            <param name="gg_lat"></param>
+            <param name="gg_lon"></param>
+        </member>
+        <member name="T:GPS.Common.Map_Type">
+            <summary>
+            地图类型
+            </summary>
+        </member>
+        <member name="M:GPS.Common.MD5Provider.Hash(System.String)">
+            <summary>
+            计算指定字符串的MD5哈希值
+            </summary>
+            <param name="message">要进行哈希计算的字符串</param>
+            <returns></returns>
+        </member>
+        <member name="P:GPS.Common.Express.ExpressBackResult.error_code">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Express.ExpressBackResult.reason">
+            <summary>
+            返回结果提示
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Express.ExpressBackResult.result">
+            <summary>
+            返回数据
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.ID">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.Efname">
+            <summary>
+            电子围栏名称
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.Eptype">
+            <summary>
+            电子围栏类型
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.Loandlastr">
+            <summary>
+            经纬度字符串
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.Epstate">
+            <summary>
+            电子围栏状态
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.Enabled">
+            <summary>
+            是否启用
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Rail.Tsn">
+            <summary>
+            序列号
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TaourRelation.Name">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TaourRelation.Id">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TaourRelation.AourMember">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TaourRelation.AourTsn">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TaourRelation.Tsn">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TaourRelation.TsnPwd">
+            <summary>
+            标识列ID
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringSet``1(System.String,System.Object,System.Nullable{System.TimeSpan},StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String类型 新增一条记录
+            </summary>
+            <typeparam name="T">generic refrence type</typeparam>
+            <param name="key">unique key of value</param>
+            <param name="value">value of key of type object</param>
+            <param name="expiresAt">time span of expiration</param>
+            <param name= "when">枚举类型</param>
+            <param name="commandFlags"></param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringSet``1(System.String,``0,System.Nullable{System.TimeSpan},StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String类型 新增一条记录
+            </summary>
+            <typeparam name="T">generic refrence type</typeparam>
+            <param name="key">unique key of value</param>
+            <param name="value">value of key of type object</param>
+            <param name="expiresAt">time span of expiration</param>
+            <param name= "when">枚举类型</param>
+            <param name="commandFlags"></param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringUpdate``1(System.String,``0,System.TimeSpan,StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            更新时应使用此方法，代码更可读。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiresAt"></param>
+            <param name="when"></param>
+            <param name="commandFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringGet``1(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String类型  Get
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="commandFlags"></param>
+            <returns>T</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringLength(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String数据类型 获取指定key中字符串长度
+            </summary>
+            <param name="key"></param>
+            <param name="commandFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringAppend(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis String数据类型  返回拼接后总长度
+            </summary>
+            <param name="key"></param>
+            <param name="appendVal"></param>
+            <param name="commandFlags"></param>
+            <returns>总长度</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringGetAndSet(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            设置新值并且返回旧值
+            </summary>
+            <param name="key"></param>
+            <param name="newVal"></param>
+            <param name="commandFlags"></param>
+            <returns>OldVal</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.StringIncrement(System.String,System.Double,StackExchange.Redis.CommandFlags)">
+            <summary>
+            为数字增长val
+            </summary>
+            <param name="key"></param>
+            <param name="val"></param>
+            <param name="commandFlags"></param>
+            <returns>增长后的值</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.Redis.IRedisClient.StringGetList``1(System.String,System.Int32,StackExchange.Redis.CommandFlags)" -->
+        <member name="M:GPS.Common.Redis.IRedisClient.KeyExists(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis中是否存在指定Key
+            </summary>
+            <param name="key"></param>
+            <param name="commandFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.KeyRemove(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            从Redis中移除键
+            </summary>
+            <param name="key"></param>
+            <param name="commandFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.KeyRemove(StackExchange.Redis.RedisKey[],StackExchange.Redis.CommandFlags)">
+            <summary>
+            从Redis中移除多个键
+            </summary>
+            <param name="keys"></param>
+            <param name="commandFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.DbConnectionStop">
+            <summary>
+            Dispose DB connection 释放DB相关链接
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashSet(System.String,System.Collections.Generic.List{StackExchange.Redis.HashEntry},StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  批量新增
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashSet``1(System.String,System.String,``0,StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  新增一个
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <param name="val"></param>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashGet``1(System.String,System.String)">
+            <summary>
+             Redis散列数据类型 获取指定key的指定field
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashGetAll(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型 获取所有field所有值,以 HashEntry[]形式返回
+            </summary>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashGetAllValues``1(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型 获取key中所有field的值。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashGetAllKeys(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型 获取所有Key名称
+            </summary>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashDelete(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型  单个删除field
+            </summary>
+            <param name="key"></param>
+            <param name="hashField"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashDelete(System.String,System.String[],StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型  批量删除field
+            </summary>
+            <param name="key"></param>
+            <param name="hashFields"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashExists(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型 判断指定键中是否存在此field
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashLength(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  获取指定key中field数量
+            </summary>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.IRedisClient.HashIncrement(System.String,System.String,System.Double,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  为key中指定field增加incrVal值
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <param name="incrVal"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringSet``1(System.String,``0,System.Nullable{System.TimeSpan},StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String类型 新增一条记录
+            </summary>
+            <typeparam name="T">generic refrence type</typeparam>
+            <param name="key">unique key of value</param>
+            <param name="value">value of key of type T</param>
+            <param name="expiresAt">time span of expiration</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringSet``1(System.String,System.Object,System.Nullable{System.TimeSpan},StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String类型 新增一条记录
+            </summary>
+            <typeparam name="T">generic refrence type</typeparam>
+            <param name="key">unique key of value</param>
+            <param name="value">value of key of type object</param>
+            <param name="expiresAt">time span of expiration</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringLength(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String数据类型 获取指定key中字符串长度
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringAppend(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis String数据类型  返回拼接后总长度
+            </summary>
+            <param name="key"></param>
+            <param name="appendVal"></param>
+            <returns>总长度</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringGetAndSet(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            设置新值并且返回旧值
+            </summary>
+            <param name="key"></param>
+            <param name="newVal"></param>
+            <param name="commandFlags"></param>
+            <returns>OldVal</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringUpdate``1(System.String,``0,System.TimeSpan,StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            更新时应使用此方法，代码更可读。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiresAt"></param>
+            <param name="when"></param>
+            <param name="commandFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringIncrement(System.String,System.Double,StackExchange.Redis.CommandFlags)">
+            <summary>
+            为数字增长val
+            </summary>
+            <param name="key"></param>
+            <param name="val">可以为负</param>
+            <param name="commandFlags"></param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.StringGet``1(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis String类型  Get
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns>T</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GPS.Common.Redis.RedisClient.StringGetList``1(System.String,System.Int32,StackExchange.Redis.CommandFlags)" -->
+        <member name="M:GPS.Common.Redis.RedisClient.HashSet(System.String,System.Collections.Generic.List{StackExchange.Redis.HashEntry},StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  批量新增
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashSet``1(System.String,System.String,``0,StackExchange.Redis.When,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  新增一个
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <param name="val"></param>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashGet``1(System.String,System.String)">
+            <summary>
+             Redis散列数据类型 获取指定key的指定field
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashGetAll(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型 获取所有field所有值,以 HashEntry[]形式返回
+            </summary>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashGetAllValues``1(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型 获取key中所有field的值。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashGetAllKeys(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型 获取所有Key名称
+            </summary>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashDelete(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型  单个删除field
+            </summary>
+            <param name="key"></param>
+            <param name="hashField"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashDelete(System.String,System.String[],StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型  批量删除field
+            </summary>
+            <param name="key"></param>
+            <param name="hashFields"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashExists(System.String,System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+             Redis散列数据类型 判断指定键中是否存在此field
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashLength(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  获取指定key中field数量
+            </summary>
+            <param name="key"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisClient.HashIncrement(System.String,System.String,System.Double,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis散列数据类型  为key中指定field增加incrVal值
+            </summary>
+            <param name="key"></param>
+            <param name="field"></param>
+            <param name="incrVal"></param>
+            <param name="flags"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GPS.Common.Redis.RedisClientConfigurations">
+            <summary>
+            记录redis连接信息，此信息和配置文件中的RedisConfig相呼应。
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.Url">
+            <summary>
+            缓存服务器地址
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.Port">
+            <summary>
+            端口号
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.ConnectTimeout">
+            <summary>
+            超时时间（毫秒）
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.ConnectRetry">
+            <summary>
+            重试连接的次数
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.DefaultDatabase">
+            <summary>
+             默认0到-1
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.PreserveAsyncOrder">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Redis.RedisClientConfigurations.SyncTimeout">
+            <summary>
+            请求超时时间
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisManager.GetManager">
+            <summary>
+            构造函数，在其中注册Redis事件
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisManager.KeyExists(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            Redis中是否存在指定Key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisManager.DbConnectionStop">
+            <summary>
+            Dispose DB connection 释放DB相关链接
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisManager.KeyRemove(System.String,StackExchange.Redis.CommandFlags)">
+            <summary>
+            从Redis中移除键
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.Redis.RedisManager.KeyRemove(StackExchange.Redis.RedisKey[],StackExchange.Redis.CommandFlags)">
+            <summary>
+            从Redis中移除多个键
+            </summary>
+            <param name="keys"></param>
+        </member>
+        <member name="F:GPS.Common.RegexManage.userName">
+            <summary>
+            由数字、26个英文字母或者下划线组成的字符串
+            </summary>
+        </member>
+        <member name="F:GPS.Common.RegexManage.PWD">
+            <summary>
+            以字母开头，长度在6~18之间，只能包含字符、数字和下划线
+            </summary>
+        </member>
+        <member name="F:GPS.Common.RegexManage.ChineseCharacter">
+            <summary>
+            汉字
+            </summary>
+        </member>
+        <member name="M:GPS.Common.RegexManage.IsIP(System.String)">
+            <summary>
+            验证IP地址是否合法
+            </summary>
+            <param name="ip">要验证的IP地址</param>        
+        </member>
+        <member name="M:GPS.Common.RegexManage.IsEmail(System.String)">
+            <summary>
+            验证EMail是否合法
+            </summary>
+            <param name="email">要验证的Email</param>
+        </member>
+        <member name="M:GPS.Common.RegexManage.IsNumber(System.String)">
+            <summary>
+            验证是否为数字
+            </summary>
+            <param name="number">要验证的数字</param>        
+        </member>
+        <member name="M:GPS.Common.RegexManage.IsIdCard(System.String)">
+            <summary>
+            验证身份证是否合法
+            </summary>
+            <param name="idCard">要验证的身份证</param>        
+        </member>
+        <member name="M:GPS.Common.RegexManage.IsMatch(System.String,System.String)">
+            <summary>
+            验证输入字符串是否与模式字符串匹配，匹配返回true
+            </summary>
+            <param name="input">输入字符串</param>
+            <param name="pattern">模式字符串</param>        
+        </member>
+        <member name="M:GPS.Common.RegexManage.IsMatch(System.String,System.String,System.Text.RegularExpressions.RegexOptions)">
+            <summary>
+            验证输入字符串是否与模式字符串匹配，匹配返回true
+            </summary>
+            <param name="input">输入的字符串</param>
+            <param name="pattern">模式字符串</param>
+            <param name="options">筛选条件</param>
+        </member>
+        <member name="M:GPS.Common.ResposeApi.ApiUrl(System.Boolean)">
+            <summary>
+            api接口地址
+            </summary>
+        </member>
+        <member name="M:GPS.Common.ResposeApi.Api_Send_Product_Vali(System.Boolean)">
+            <summary>
+            发货验证
+            </summary>
+        </member>
+        <member name="M:GPS.Common.ResposeApi.Api_Send_Express(System.Boolean)">
+            <summary>
+            发送快递单号
+            </summary>
+        </member>
+        <member name="M:GPS.Common.ResposeApi.PostRequest(System.String,System.String,System.String)">
+            <summary>
+            Post请求
+            </summary>
+            <param name="cmdId"></param>
+            <param name="postData"></param>
+            <param name="postUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.ResposeApi.PostRequest(System.String,System.Boolean,System.String)">
+            <summary>
+            访问接口
+            </summary>
+            <param name="postData"></param>
+            <param name="postUrl"></param>
+            <param name="contentType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.ResposeApi.PostRequest(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean,System.String)">
+            <summary>
+            拼接地址
+            </summary>
+            <param name="postData"></param>
+            <param name="contentType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GPS.Common.ResultType">
+            <summary>
+                表示业务操作结果的枚举
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.Success">
+            <summary>
+                操作成功
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.NoChanged">
+            <summary>
+                操作取消或操作没引发任何变化
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.ParamError">
+            <summary>
+                参数错误
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.QueryNull">
+            <summary>
+                指定参数的数据不存在
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.PurviewLack">
+            <summary>
+                权限不足
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.IllegalOperation">
+            <summary>
+                非法操作
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.Warning">
+            <summary>
+                警告
+            </summary>
+        </member>
+        <member name="F:GPS.Common.ResultType.Error">
+            <summary>
+                操作引发错误
+            </summary>
+        </member>
+        <member name="T:GPS.Common.SessionHelper">
+            <summary>
+            Session 操作类
+            1、GetSession(string name)根据session名获取session对象
+            2、SetSession(string name, object val)设置session
+            </summary>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.GetSession(System.String)">
+            <summary>
+            根据session名获取session对象
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.SetSession(System.String,System.Object)">
+            <summary>
+            设置session
+            </summary>
+            <param name="name">session 名</param>
+            <param name="val">session 值</param>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Add(System.String,System.String)">
+            <summary>
+            添加Session，调动有效期为20分钟
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+            <param name="strValue">Session值</param>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Adds(System.String,System.String[])">
+            <summary>
+            添加Session，调动有效期为20分钟
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+            <param name="strValues">Session值数组</param>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Add(System.String,System.String,System.Int32)">
+            <summary>
+            添加Session
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+            <param name="strValue">Session值</param>
+            <param name="iExpires">调动有效期（分钟）</param>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Adds(System.String,System.String[],System.Int32)">
+            <summary>
+            添加Session
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+            <param name="strValues">Session值数组</param>
+            <param name="iExpires">调动有效期（分钟）</param>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Get(System.String)">
+            <summary>
+            读取某个Session对象值
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+            <returns>Session对象值</returns>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Gets(System.String)">
+            <summary>
+            读取某个Session对象值数组
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+            <returns>Session对象值数组</returns>
+        </member>
+        <member name="M:GPS.Common.SessionHelper.Del(System.String)">
+            <summary>
+            删除某个Session对象
+            </summary>
+            <param name="strSessionName">Session对象名称</param>
+        </member>
+        <member name="T:GPS.Common.SMSManga">
+            <summary>
+            短信操作类
+            </summary>
+        </member>
+        <member name="M:GPS.Common.SMSManga.GetRandonNumber(System.Int32)">
+            <summary>
+            获取随机验证码
+            </summary>
+            <param name="len"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.SMSManga.SendMessage(System.String,System.Int32,System.String)">
+            <summary>
+            发送短信并存储
+            </summary>
+            <param name="phoneNumber">对方手机号</param>
+            <param name="content">短信内容</param>
+            <param name="isSave">是否保存到数据库</param>
+            <param name="isSave">验证码类型</param>
+            <returns></returns>
+        </member>
+        <member name="P:GPS.Common.StringOperator.IPAddress">
+            <summary>    
+            取得客户端真实IP。如果有代理则取第一个非内网地址   
+            </summary>   
+        </member>
+        <member name="M:GPS.Common.StringOperator.FilterHtml(System.String)">
+            <summary>
+            过滤字符串中的HTML代码
+            </summary>
+            <param name="str">过滤的字符串</param>
+            <returns>过滤后的字符串</returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.IsIPAddress(System.String)">
+            <summary>   
+            判断是否是IP地址格式 0.0.0.0   
+            </summary>   
+            <param name="str1">待判断的IP地址</param>   
+            <returns>true or false</returns>   
+        </member>
+        <member name="M:GPS.Common.StringOperator.GenerateStr(System.Int32,System.Int32)">
+            <summary>
+            产生随机数字串[a-z0-9]
+            </summary>
+            <param name="Len">字符串长度[nt]</param>
+            <param name="mode">获取模式[int] 0代表纯数字,1代表纯字母,2代表数字与字母混排</param>
+            <returns>随机字符串</returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.GetRandomNumber(System.Int32,System.Int32)">
+            <summary>
+            获得随机数
+            </summary>
+            <param name="min">最小值（不包含）</param>
+            <param name="max">最大值（包含）</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.Filt_XMLBadCode(System.String)">
+            <summary>
+            过滤XMLCode代码
+            </summary>
+            <param name="InputString">输入字符串</param>
+            <returns>过滤后的字符串</returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.isNumber(System.String)">
+            <summary>
+            判断用户输入的字符串是否为数字
+            </summary>
+            <param name="InputString">输入字符串</param>
+            <returns>布尔类型</returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.CheckIsNumber(System.String,System.Int32)">
+            <summary>
+            判断字符串是否数字，如果不是，则设置默认的数字
+            </summary>
+            <param name="InputString">输入字符串</param>
+            <param name="DefaultValue">默认输出数字</param>
+            <returns>整数数字</returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.ValidString(System.String,System.String)">
+            <summary>
+            验证字符串格式
+            </summary>
+            <param name="InputString">验证字符串</param>
+            <param name="Pattern">正则表达式</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.StringToJson(System.String)">
+            <summary>
+            过滤JSON字符中的特殊字符
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.EncodeBase64(System.String,System.String)">
+            <summary>
+            解密
+            </summary>
+            <param name="code_type"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.StringOperator.DecodeBase64(System.String,System.String)">
+            <summary>
+            解码
+            </summary>
+            <param name="code_type"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.Coordinates">
+            <summary>
+            坐标
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.Location">
+            <summary>
+            位置(出发地,目的地)
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.Mileage">
+            <summary>
+            总里程
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.ElapsedTime">
+            <summary>
+            总行驶时间
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.OilConsumption">
+            <summary>
+            总油耗
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.StartTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:GPS.Common.TrajectoryLocation.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="T:GPS.Common.CreateBytes">
+            <summary>  
+            创建WebClient.UploadData方法所需二进制数组  
+            </summary>  
+        </member>
+        <member name="M:GPS.Common.CreateBytes.JoinBytes(System.Collections.ArrayList)">
+            <summary>  
+            拼接所有的二进制数组为一个数组  
+            </summary>  
+            <param name="byteArrays">数组</param>  
+            <returns></returns>  
+            <remarks>加上结束边界</remarks>  
+        </member>
+        <member name="M:GPS.Common.CreateBytes.CreateFieldData(System.String,System.String)">
+            <summary>  
+            获取普通表单区域二进制数组  
+            </summary>  
+            <param name="fieldName">表单名</param>  
+            <param name="fieldValue">表单值</param>  
+            <returns></returns>  
+            <remarks>  
+            -----------------------------7d52ee27210a3crnContent-Disposition: form-data; name="表单名"rnrn表单值rn  
+            </remarks>  
+        </member>
+        <member name="M:GPS.Common.CreateBytes.CreateFieldData(System.String,System.String,System.String,System.Byte[])">
+            <summary>  
+            获取文件上传表单区域二进制数组  
+            </summary>  
+            <param name="fieldName">表单名</param>  
+            <param name="filename">文件名</param>  
+            <param name="contentType">文件类型</param>  
+            <param name="contentLength">文件长度</param>  
+            <param name="stream">文件流</param>  
+            <returns>二进制数组</returns>  
+        </member>
+        <member name="M:GPS.Common.CreateBytes.upLoadPic(System.String,System.Byte[],System.String,System.String)">
+            <summary>
+            上传图片
+            </summary>
+            <param name="url">上传到目的服务的地址</param>
+            <param name="data">上传文件的数据</param>
+            <param name="filename">存储文件名</param>
+            <param name="directory">上传到目的服务器的图片相对目录(如：aa/bb/cc/)</param>
+            <returns>图片地址</returns>
+        </member>
+        <member name="M:GPS.Common.CreateBytes.upLoadPic(System.String,System.String,System.String)">
+            <summary>
+            上传图片
+            </summary>
+            <param name="url">上传到目的服务的地址</param>
+            <param name="url">上传到目的服务器的图片相对目录(如：aa/bb/cc/)</param>
+            <param name="filename">上传的文件名的完整路径</param>
+            <returns>图片地址</returns>
+        </member>
+        <member name="P:GPS.Common.Wxpay.business.JsApiPay.page">
+            <summary>
+            保存页面对象，因为要在类的方法中使用Page的Request对象
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Wxpay.business.JsApiPay.openid">
+            <summary>
+            openid用于调用统一下单接口
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Wxpay.business.JsApiPay.access_token">
+            <summary>
+            access_token用于获取收货地址js函数入口参数
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Wxpay.business.JsApiPay.total_fee">
+            <summary>
+            商品金额，用于统一下单
+            </summary>
+        </member>
+        <member name="P:GPS.Common.Wxpay.business.JsApiPay.unifiedOrderResult">
+            <summary>
+            统一下单接口返回结果
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.JsApiPay.GetOpenidAndAccessToken">
+            
+            网页授权获取用户基本信息的全部过程
+            详情请参看网页授权获取用户基本信息：http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html
+            第一步：利用url跳转获取code
+            第二步：利用code去获取openid和access_token
+            
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.JsApiPay.GetOpenidAndAccessTokenFromCode(System.String)">
+            	    * 
+            	    * 通过code换取网页授权access_token和openid的返回数据，正确时返回的JSON数据包如下：
+            	    * {
+            	    *  "access_token":"ACCESS_TOKEN",
+            	    *  "expires_in":7200,
+            	    *  "refresh_token":"REFRESH_TOKEN",
+            	    *  "openid":"OPENID",
+            	    *  "scope":"SCOPE",
+            	    *  "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+            	    * }
+            	    * 其中access_token可用于获取共享收货地址
+            	    * openid是微信支付jsapi支付接口统一下单时必须的参数
+                    * 更详细的说明请参考网页授权获取用户基本信息：http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html
+                    * @失败时抛异常WxPayException
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.JsApiPay.GetUnifiedOrderResult">
+            调用统一下单，获得下单结果
+            @return 统一下单结果
+            @失败时抛异常WxPayException
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.JsApiPay.GetJsApiParameters">
+             
+            从统一下单成功返回的数据中获取微信浏览器调起jsapi支付所需的参数，
+            微信浏览器调起JSAPI时的输入参数格式如下：
+            {
+              "appId" : "wx2421b1c4370ec43b",     //公众号名称，由商户传入     
+              "timeStamp":" 1395712654",         //时间戳，自1970年以来的秒数     
+              "nonceStr" : "e61463f8efa94090b1f366cccfbbb444", //随机串     
+              "package" : "prepay_id=u802345jgfjsdfgsdg888",     
+              "signType" : "MD5",         //微信签名方式:    
+              "paySign" : "70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名 
+            }
+            @return string 微信浏览器调起JSAPI时的输入参数，json格式可以直接做参数用
+            更详细的说明请参考网页端调起支付API：http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7
+            
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.JsApiPay.GetEditAddressParameters">
+            
+            获取收货地址js函数入口参数,详情请参考收货地址共享接口：http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_9
+            @return string 共享收货地址js函数需要的参数，json格式可以直接做参数使用
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.MicroPay.Run(System.String,System.String,System.String)">
+            刷卡支付完整业务流程逻辑
+            @param body 商品描述
+            @param total_fee 总金额
+            @param auth_code 支付授权码
+            @throws WxPayException
+            @return 刷卡支付结果
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.MicroPay.Query(System.String,System.Int32@)">
+            
+            查询订单情况
+            @param string out_trade_no  商户订单号
+            @param int succCode         查询订单结果：0表示订单不成功，1表示订单成功，2表示继续查询
+            @return 订单查询接口返回的数据，参见协议接口
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.MicroPay.Cancel(System.String,System.Int32)">
+            	    * 
+            	    * 撤销订单，如果失败会重复调用10次
+            	    * @param string out_trade_no 商户订单号
+            	    * @param depth 调用次数，这里用递归深度表示
+                    * @return false表示撤销失败，true表示撤销成功
+        </member>
+        <member name="T:GPS.Common.Wxpay.business.NativeNotify">
+            <summary>
+            扫码支付模式一回调处理类
+            接收微信支付后台发送的扫码结果，调用统一下单接口并将下单结果返回给微信支付后台
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.NativePay.GetPrePayUrl(System.String)">
+            生成扫描支付模式一URL
+            @param productId 商品ID
+            @return 模式一URL
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.NativePay.GetPayUrl(System.String)">
+            生成直接支付url，支付url有效期为2小时,模式二
+            @param productId 商品ID
+            @return 模式二URL
+        </member>
+        <member name="M:GPS.Common.Wxpay.business.NativePay.ToUrlParams(System.Collections.Generic.SortedDictionary{System.String,System.Object})">
+            参数数组转换为url格式
+            @param map 参数名与参数值的映射表
+            @return URL字符串
+        </member>
+        <member name="T:GPS.Common.Wxpay.business.ResultNotify">
+            <summary>
+            支付结果通知回调处理类
+            负责接收微信支付后台发送的支付结果并对订单有效性进行验证，将验证结果反馈给微信支付后台
+            </summary>
+        </member>
+        <member name="T:GPS.Common.Wxpay.WxPayConfig">
+            配置账号信息
+        </member>
+        <member name="T:GPS.Common.Wxpay.WxPayData">
+            <summary>
+            微信支付协议接口数据类，所有的API接口通信都依赖这个数据结构，
+            在调用接口之前先填充各个字段的值，然后进行接口通信，
+            这样设计的好处是可扩展性强，用户可随意对协议进行更改而不用重新设计数据结构，
+            还可以随意组合出不同的协议数据包，不用为每个协议设计一个数据包结构
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.SetValue(System.String,System.Object)">
+                    * 设置某个字段的值
+                    * @param key 字段名
+                     * @param value 字段值
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.GetValue(System.String)">
+                    * 根据字段名获取某个字段的值
+                    * @param key 字段名
+                     * @return key对应的字段值
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.IsSet(System.String)">
+            判断某个字段是否已设置
+            @param key 字段名
+            @return 若字段key已被设置，则返回true，否则返回false
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.ToXml">
+             @将Dictionary转成xml
+             @return 经转换得到的xml串
+             @throws WxPayException
+            
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.FromXml(System.String)">
+            @将xml转为WxPayData对象并返回对象内部的数据
+            @param string 待转换的xml串
+            @return 经转换得到的Dictionary
+            @throws WxPayException
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.ToUrl">
+            @Dictionary格式转化成url参数格式
+            @ return url格式串, 该串不包含sign字段值
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.ToJson">
+                    * @Dictionary格式化成Json
+                     * @return json串数据
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.ToPrintStr">
+            @values格式化成能在Web页面上显示的结果（因为web页面上不能直接输出xml格式的字符串）
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.MakeSign">
+            @生成签名，详见签名生成算法
+            @return 签名, sign字段不参加签名
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.CheckSign">
+            
+            检测签名是否正确
+            正确返回true，错误抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayData.GetValues">
+            @获取Dictionary
+        </member>
+        <member name="T:GPS.Common.Wxpay.HttpService">
+            <summary>
+            http连接基础类，负责底层的http通信
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Wxpay.HttpService.Get(System.String)">
+            <summary>
+            处理http GET请求，返回数据
+            </summary>
+            <param name="url">请求的url地址</param>
+            <returns>http GET成功后返回的数据，失败抛WebException异常</returns>
+        </member>
+        <member name="M:GPS.Common.Wxpay.Log.Debug(System.String,System.String)">
+            向日志文件写入调试信息
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="M:GPS.Common.Wxpay.Log.Info(System.String,System.String)">
+            向日志文件写入运行时信息
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="M:GPS.Common.Wxpay.Log.Error(System.String,System.String)">
+            向日志文件写入出错信息
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="M:GPS.Common.Wxpay.Log.WriteLog(System.String,System.String,System.String)">
+            实际的写日志操作
+            @param type 日志记录类型
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="T:GPS.Common.Wxpay.Notify">
+            <summary>
+            回调处理基类
+            主要负责接收微信支付后台发送过来的数据，对数据进行签名验证
+            子类在此类基础上进行派生并重写自己的回调处理过程
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Wxpay.Notify.GetNotifyData">
+            <summary>
+            接收从微信支付后台发送过来的数据并验证签名
+            </summary>
+            <returns>微信支付后台返回的数据</returns>
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.Micropay(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            提交被扫支付API
+            收银员使用扫码设备读取微信用户刷卡授权码以后，二维码或条码信息传送至商户收银台，
+            由商户收银台或者商户后台调用该接口发起支付。
+            @param WxPayData inputObj 提交给被扫支付API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回调用结果，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.OrderQuery(GPS.Common.Wxpay.WxPayData,System.Int32)">
+               
+            查询订单
+            @param WxPayData inputObj 提交给查询订单API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回订单查询结果，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.Reverse(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            
+            撤销订单API接口
+            @param WxPayData inputObj 提交给撤销订单API接口的参数，out_trade_no和transaction_id必填一个
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回API调用结果，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.Refund(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            
+            申请退款
+            @param WxPayData inputObj 提交给申请退款API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回接口调用结果，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.RefundQuery(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            
+            查询退款
+            提交退款申请后，通过该接口查询退款状态。退款有一定延时，
+            用零钱支付的退款20分钟内到账，银行卡支付的退款3个工作日后重新查询退款状态。
+            out_refund_no、out_trade_no、transaction_id、refund_id四个参数必填一个
+            @param WxPayData inputObj 提交给查询退款API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.DownloadBill(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            下载对账单
+            @param WxPayData inputObj 提交给下载对账单API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.ShortUrl(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            
+            转换短链接
+            该接口主要用于扫码原生支付模式一中的二维码链接转成短链接(weixin://wxpay/s/XXXXXX)，
+            减小二维码数据量，提升扫描速度和精确度。
+            @param WxPayData inputObj 提交给转换短连接API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.UnifiedOrder(GPS.Common.Wxpay.WxPayData,System.Int32,System.String)">
+            
+            统一下单
+            @param WxPaydata inputObj 提交给统一下单API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.CloseOrder(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            
+            关闭订单
+            @param WxPayData inputObj 提交给关闭订单API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.ReportCostTime(System.String,System.Int32,GPS.Common.Wxpay.WxPayData)">
+            
+            测速上报
+            @param string interface_url 接口URL
+            @param int timeCost 接口耗时
+            @param WxPayData inputObj参数数组
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.Report(GPS.Common.Wxpay.WxPayData,System.Int32)">
+            
+            测速上报接口实现
+            @param WxPayData inputObj 提交给测速上报接口的参数
+            @param int timeOut 测速上报接口超时时间
+            @throws WxPayException
+            @return 成功时返回测速上报接口返回的结果，其他抛异常
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.GenerateOutTradeNo">
+                    * 根据当前系统时间加随机序列来生成订单号
+                     * @return 订单号
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.GenerateTimeStamp">
+                    * 生成时间戳，标准北京时间，时区为东八区，自1970年1月1日 0点0分0秒以来的秒数
+                     * @return 时间戳
+        </member>
+        <member name="M:GPS.Common.Wxpay.WxPayApi.GenerateNonceStr">
+            生成随机串，随机串包含字母或数字
+            @return 随机串
+        </member>
+        <member name="M:GPS.Common.XmlConfig.InsureXmlData">
+            <summary>
+            投保基本数据
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.XmlConfig.SurrenderXmlData">
+            <summary>
+            退保基本数据
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.XmlConfig.APIReturnXmlData">
+            <summary>
+            接口返回消息基本格式
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GPS.Common.XMlHelper">
+             <summary>
+            XMlHelper 的摘要说明
+             </summary>
+        </member>
+        <member name="F:GPS.Common.XMlHelper._filePath">
+            <summary>
+            XML文件的物理路径
+            </summary>
+        </member>
+        <member name="F:GPS.Common.XMlHelper._xml">
+            <summary>
+            Xml文档
+            </summary>
+        </member>
+        <member name="F:GPS.Common.XMlHelper._element">
+            <summary>
+            XML的根节点
+            </summary>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.#ctor(System.String)">
+            <summary>
+            实例化XmlHelper对象
+            </summary>
+            <param name="xmlFilePath">Xml文件的相对路径</param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.GetNode(System.String)">
+            <summary>
+            获取指定XPath表达式的节点对象
+            </summary>       
+            <param name="xPath">XPath表达式,
+            范例1: @"Skill/First/SkillItem", 等效于 @"//Skill/First/SkillItem"
+            范例2: @"Table[USERNAME='a']" , []表示筛选,USERNAME是Table下的一个子节点.
+            范例3: @"ApplyPost/Item[@itemName='岗位编号']",@itemName是Item节点的属性.
+            </param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.GetValue(System.String)">
+            <summary>
+            获取指定XPath表达式节点的值
+            </summary>
+            <param name="xPath">XPath表达式,
+            范例1: @"Skill/First/SkillItem", 等效于 @"//Skill/First/SkillItem"
+            范例2: @"Table[USERNAME='a']" , []表示筛选,USERNAME是Table下的一个子节点.
+            范例3: @"ApplyPost/Item[@itemName='岗位编号']",@itemName是Item节点的属性.
+            </param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.GetAttributeValue(System.String,System.String)">
+            <summary>
+            获取指定XPath表达式节点的属性值
+            </summary>
+            <param name="xPath">XPath表达式,
+            范例1: @"Skill/First/SkillItem", 等效于 @"//Skill/First/SkillItem"
+            范例2: @"Table[USERNAME='a']" , []表示筛选,USERNAME是Table下的一个子节点.
+            范例3: @"ApplyPost/Item[@itemName='岗位编号']",@itemName是Item节点的属性.
+            </param>
+            <param name="attributeName">属性名</param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.AppendNode(System.Xml.XmlNode)">
+            <summary>
+            1. 功能：新增节点。
+            2. 使用条件：将任意节点插入到当前Xml文件中。
+            </summary>       
+            <param name="xmlNode">要插入的Xml节点</param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.AppendNode(System.String,System.String,System.String,System.String)">
+            <summary>
+            插入数据
+            </summary>     
+            <param name="node">节点</param>
+            <param name="element">元素名，非空时插入新元素，否则在该元素中插入属性</param>
+            <param name="attribute">属性名，非空时插入该元素属性值，否则插入元素值</param>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.AppendNode(System.Data.DataSet)">
+            <summary>
+            1. 功能：新增节点。
+            2. 使用条件：将DataSet中的第一条记录插入Xml文件中。
+            </summary>       
+            <param name="ds">DataSet的实例，该DataSet中应该只有一条记录</param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.RemoveNode(System.String)">
+            <summary>
+            删除指定XPath表达式的节点
+            </summary>       
+            <param name="xPath">XPath表达式,
+            范例1: @"Skill/First/SkillItem", 等效于 @"//Skill/First/SkillItem"
+            范例2: @"Table[USERNAME='a']" , []表示筛选,USERNAME是Table下的一个子节点.
+            范例3: @"ApplyPost/Item[@itemName='岗位编号']",@itemName是Item节点的属性.
+            </param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.Update(System.String,System.String,System.String)">
+            <summary>
+            修改数据
+            </summary>
+            <param name="path">路径</param>
+            <param name="node">节点</param>
+            <param name="attribute">属性名，非空时修改该节点属性值，否则修改节点值</param>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.Save">
+            <summary>
+            保存XML文件
+            </summary>       
+        </member>
+        <member name="M:GPS.Common.XMlHelper.GetXMLString">
+            <summary>
+            获取当前实体的xml
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.CreateRootElement(System.String)">
+            <summary>
+            创建根节点对象
+            </summary>
+            <param name="xmlFilePath">Xml文件的相对路径</param>       
+        </member>
+        <member name="M:GPS.Common.XMlHelper.GetValue(System.String,System.String)">
+            <summary>
+            获取指定XPath表达式节点的值
+            </summary>
+            <param name="xmlFilePath">Xml文件的相对路径</param>
+            <param name="xPath">XPath表达式,
+            范例1: @"Skill/First/SkillItem", 等效于 @"//Skill/First/SkillItem"
+            范例2: @"Table[USERNAME='a']" , []表示筛选,USERNAME是Table下的一个子节点.
+            范例3: @"ApplyPost/Item[@itemName='岗位编号']",@itemName是Item节点的属性.
+            </param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.GetAttributeValue(System.String,System.String,System.String)">
+            <summary>
+            获取指定XPath表达式节点的属性值
+            </summary>
+            <param name="xmlFilePath">Xml文件的相对路径</param>
+            <param name="xPath">XPath表达式,
+            范例1: @"Skill/First/SkillItem", 等效于 @"//Skill/First/SkillItem"
+            范例2: @"Table[USERNAME='a']" , []表示筛选,USERNAME是Table下的一个子节点.
+            范例3: @"ApplyPost/Item[@itemName='岗位编号']",@itemName是Item节点的属性.
+            </param>
+            <param name="attributeName">属性名</param>
+        </member>
+        <member name="M:GPS.Common.XMlHelper.ObjectToXML(System.Object)">
+            <summary>
+            将object对象序列化成XML
+            </summary>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GPS.Common.XmlToJsonHelper.XmlToJSON(System.String)">
+            <summary>  
+            将xml转换为json  
+            </summary>  
+            <param name="xmlFile">xml文件</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:GPS.Common.XmlToJsonHelper.XmlToJSON(System.Xml.XmlDocument)">
+            <summary>  
+            将xml转换为json  
+            </summary>  
+            <param name="xmlDoc">xml文档</param>  
+            <returns></returns>  
+        </member>
+        <member name="T:GPS.Common.XOrder.AgreementType">
+            <summary>
+            9955协议新指令规则
+            </summary>
+        </member>
+        <member name="T:GPS.Common.XOrder.OrderTypeW02">
+            <summary>
+            w02 华赛设备1
+            </summary>
+        </member>
+        <member name="T:GPS.Common.XOrder.OrderTypeW03">
+            <summary>
+            W03 城市漫步设备
+            </summary>
+        </member>
+        <member name="T:GPS.Common.Rand">
+            <summary>
+            验证码类
+            </summary>
+        </member>
+        <member name="M:GPS.Common.Rand.Number(System.Int32)">
+            <summary>
+            生成随机数字
+            </summary>
+            <param name="length">生成长度</param>
+        </member>
+        <member name="M:GPS.Common.Rand.Number(System.Int32,System.Boolean)">
+            <summary>
+            生成随机数字
+            </summary>
+            <param name="Length">生成长度</param>
+            <param name="Sleep">是否要在生成前将当前线程阻止以避免重复</param>
+        </member>
+        <member name="M:GPS.Common.Rand.Str(System.Int32)">
+            <summary>
+            生成随机字母与数字
+            </summary>
+            <param name="IntStr">生成长度</param>
+        </member>
+        <member name="M:GPS.Common.Rand.Str(System.Int32,System.Boolean)">
+            <summary>
+            生成随机字母与数字
+            </summary>
+            <param name="Length">生成长度</param>
+            <param name="Sleep">是否要在生成前将当前线程阻止以避免重复</param>
+        </member>
+        <member name="M:GPS.Common.Rand.Str_char(System.Int32)">
+            <summary>
+            生成随机纯字母随机数
+            </summary>
+            <param name="IntStr">生成长度</param>
+        </member>
+        <member name="M:GPS.Common.Rand.Str_char(System.Int32,System.Boolean)">
+            <summary>
+            生成随机纯字母随机数
+            </summary>
+            <param name="Length">生成长度</param>
+            <param name="Sleep">是否要在生成前将当前线程阻止以避免重复</param>
+        </member>
+        <member name="T:GPS.Common.YZMHelper">
+            <summary>
+            验证图片类
+            </summary>
+        </member>
+        <member name="P:GPS.Common.YZMHelper.Text">
+            <summary>
+            验证码
+            </summary>
+        </member>
+        <member name="P:GPS.Common.YZMHelper.Image">
+            <summary>
+            验证码图片
+            </summary>
+        </member>
+        <member name="M:GPS.Common.YZMHelper.Next(System.Int32)">
+            <summary>
+            获得下一个随机数
+            </summary>
+            <param name="max">最大值</param>
+        </member>
+        <member name="M:GPS.Common.YZMHelper.Next(System.Int32,System.Int32)">
+            <summary>
+            获得下一个随机数
+            </summary>
+            <param name="min">最小值</param>
+            <param name="max">最大值</param>
+        </member>
+        <member name="M:GPS.Common.YZMHelper.CreateImage">
+            <summary>
+            绘制验证码
+            </summary>
+        </member>
+        <member name="M:GPS.Common.YZMHelper.GetRandomColor">
+            <summary>
+            字体随机颜色
+            </summary>
+        </member>
+        <member name="M:GPS.Common.YZMHelper.TwistImage(System.Drawing.Bitmap,System.Boolean,System.Double,System.Double)">
+            <summary>
+            正弦曲线Wave扭曲图片
+            </summary>
+            <param name="srcBmp">图片路径</param>
+            <param name="bXDir">如果扭曲则选择为True</param>
+            <param name="nMultValue">波形的幅度倍数，越大扭曲的程度越高,一般为3</param>
+            <param name="dPhase">波形的起始相位,取值区间[0-2*PI)</param>
+        </member>
+        <member name="T:System.GPSJiuPian.myReverserClass">
+            <summary>
+            自定义比较类
+            </summary>
+        </member>
+        <member name="M:System.GPSJiuPian.getMapCoordFromBytes(System.Byte[])">
+            <summary>
+            将字节转化为具体的数据对象
+            </summary>
+            <param name="buf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:System.GPSJiuPian.WGS2Mars(System.Double,System.Double)">
+            <summary>
+            WGS84(GPS)坐标转火星坐标
+            </summary>
+            <param name="lat">纬度</param>
+            <param name="lng">经度</param>
+        </member>
+        <member name="M:Common.HttpWebResponseUtility.CreateGetHttpResponse(System.String,System.Nullable{System.Int32},System.String)">
+            <summary>  
+            创建GET方式的HTTP请求
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:Common.HttpWebResponseUtility.CreatePostHttpResponse(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
+            <summary>  
+            创建POST方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+    </members>
+</doc>
